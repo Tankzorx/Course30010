@@ -2,6 +2,7 @@
 #define _DTU_GAME_
 
 
-int testan();
+void runGame();
+
 
 #endif /*! _DTU_GAME_ */
