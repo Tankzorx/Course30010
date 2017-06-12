@@ -1,4 +1,9 @@
 ReflexBall.lod
 ReflexBall.map
 ReflexBall.wsp
-dist/
+*.obj
+*.lst
+*.asmsw
+*.ccsw
+*.linkcmd
+*.mak
