@@ -18,11 +18,9 @@ void interruptHandler() {
 
 
 void runGame() {
-  MenuItem items[2] = {{2, "Start Game" }, {3, "Go to Highscore"}};
+  MenuItem items[2] = {{2, "asd" }, {3, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}};
   // Init timer sets the reloadnumber etc.
   // We want to set it up so that the timer is interrupts every millisecond.
-  // GameState gs;
-  // gs.state = 1;
   int state = 1; // renderMenu=1, waitForPlaySelection, playing, lost
   initTimer();
   SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
@@ -31,12 +29,13 @@ void runGame() {
   while (1) {
     switch (state) {
       case 1: // renderMenu state
-	  	
-	  	menu(items);
+	  	  menu(items);
         state = 2;
         break;
       case 2:
         state = 2;
+        break;
+      default:
         break;
     };
   }

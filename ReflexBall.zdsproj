@@ -13,6 +13,8 @@
 <file filter-key="">src\api\menu.h</file>
 <file filter-key="">src\hif\console.c</file>
 <file filter-key="">src\hif\console.h</file>
+<file filter-key="">src\hif\buttonInput.c</file>
+<file filter-key="">src\hif\buttonInput.h</file>
 </files>
 
 <!-- configuration information -->
@@ -126,7 +128,6 @@
 </tool>
 <tool name="Linker">
 <options>
-<option name="startup" type="string" change-action="build"></option>
 <option name="code" type="string" change-action="build">0-FFFF</option>
 <option name="createnew" type="integer" change-action="build">0</option>
 <option name="customlnkflag" type="integer" change-action="build">0</option>
@@ -144,6 +145,7 @@
 <option name="quiet" type="boolean" change-action="none">TRUE</option>
 <option name="rdata" type="string" change-action="build">20-FF</option>
 <option name="relist" type="boolean" change-action="build">false</option>
+<option name="startup" type="string" change-action="build"></option>
 <option name="startuptype" type="integer" change-action="build">1</option>
 <option name="usecrun" type="boolean" change-action="build">true</option>
 <option name="warn" type="boolean" change-action="none">TRUE</option>
@@ -165,7 +167,7 @@
 <tool name="Assembler">
 <options>
 <option name="debug" type="boolean" change-action="assemble">true</option>
-<option name="define" type="string" change-action="assemble">_Z8F6403=1,_Z8ENCORE_640_FAMILY=1,_Z8ENCORE_F640X=1,_MODEL_LARGE=1</option>
+<option name="define" type="string" change-action="assemble">_Z8F6403=1,_Z8ENCORE_640_FAMILY=1,_Z8ENCORE_F640X=1,_MODEL_LARGE=1,_SIMULATE=1</option>
 <option name="genobj" type="boolean" change-action="assemble">true</option>
 <option name="igcase" type="boolean" change-action="assemble">false</option>
 <option name="include" type="string" change-action="assemble"></option>
@@ -188,7 +190,7 @@
 <option name="charsize" type="integer" change-action="rebuild">8</option>
 <option name="const" type="string" change-action="compile">RAM</option>
 <option name="debug" type="boolean" change-action="compile">true</option>
-<option name="define" type="string" change-action="compile">_Z8F6403,_Z8ENCORE_640_FAMILY,_Z8ENCORE_F640X,_MODEL_LARGE</option>
+<option name="define" type="string" change-action="compile">_Z8F6403,_Z8ENCORE_640_FAMILY,_Z8ENCORE_F640X,_MODEL_LARGE,_SIMULATE</option>
 <option name="doublesize" type="integer" change-action="rebuild">32</option>
 <option name="expmac" type="boolean" change-action="none">false</option>
 <option name="floatsize" type="integer" change-action="rebuild">32</option>
@@ -229,7 +231,7 @@
 </tool>
 <tool name="Debugger">
 <options>
-<option name="target" type="string" change-action="rebuild">Z8ENCORE00ZC0 - Serial</option>
+<option name="target" type="string" change-action="rebuild">Simulator</option>
 <option name="targetcommchange" type="integer" change-action="build">0</option>
 <option name="zemul_enableevents" type="boolean" change-action="none">false</option>
 <option name="zemul_brkonfull" type="boolean" change-action="none">false</option>
@@ -269,7 +271,6 @@
 </tool>
 <tool name="Linker">
 <options>
-<option name="startup" type="string" change-action="build">.</option>
 <option name="code" type="string" change-action="build">0-FFFF</option>
 <option name="createnew" type="integer" change-action="build">0</option>
 <option name="customlnkflag" type="integer" change-action="build">0</option>
@@ -287,6 +288,7 @@
 <option name="quiet" type="boolean" change-action="none">TRUE</option>
 <option name="rdata" type="string" change-action="build">20-FF</option>
 <option name="relist" type="boolean" change-action="build">false</option>
+<option name="startup" type="string" change-action="build">.</option>
 <option name="startuptype" type="integer" change-action="build">1</option>
 <option name="usecrun" type="boolean" change-action="build">true</option>
 <option name="warn" type="boolean" change-action="none">true</option>
