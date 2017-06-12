@@ -1,16 +1,9 @@
 #include <sio.h>
-#include <game.h>
+
+#include "game.h"
 
 int testan() {
-	printf("asd");
+	printf("asds");
 	return 2;
 }
-
-
-
-if (_TESTING_ == 1)
-{
-	printf("asdads\n");
-}
-
 

@@ -4,4 +4,4 @@
 
 int testan();
 
-#endif _DTU_GAME_
+#endif /*! _DTU_GAME_ */
