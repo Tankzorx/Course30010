@@ -5,13 +5,18 @@
 #include "../hif/console.h"
 
 
-void renderMenu() {
-  // printf("Rendered menu.\n");
-  gotoxy(5,5);
-  blink(1);
-  printf("MENU OPTION 1\n");
-  blink(0);
-  gotoxy(5,9);
-  printf("MENU OPTION 2\n");
+int menu(MenuItem items[]) {
+  int selectedMenuItem = 0;
+  int i;
 
+
+  clrscr();
+  for (i = 0; i < 2; i++) {
+    gotoxy(5,i*5);
+  	if (i == selectedMenuItem) {
+		blink(1);
+	}
+	printf("%s", items[i].str);
+	blink(0);
+  }	
 }
