@@ -55,7 +55,7 @@ void runGame() {
 
   while (1) {
     switch (state) {
-      case 1: // renderMenu state
+      case 1: // render menu state
         state = menu(items);
         break;
       case 2:
@@ -63,7 +63,7 @@ void runGame() {
         {
           renderBlock(blockMap[i]);
         }
-        return;
+        return; // Premature return for testing.
         state = 2;
         break;
       case 1337:

@@ -66,9 +66,9 @@ int menu(MenuItem items[]) {
         selectPrev(items, selectedMenuItem, numItems);
         lastClicked = 2;
         break;
-      case 4: // PD3 clicked // Dunno what should happen here.
+      case 4: // PD3 clicked // Assume this is 'select this option'
         if (lastClicked == 4) { continue; } // Guard against click spam.
-        lastClicked = 4;
+        return items[selectedMenuItem].stateNum;
         break;
       case 6: // PF6+PD3 clicked // Dunno what should happen here.
         if (lastClicked == 6) { continue; } // Guard against click spam.
