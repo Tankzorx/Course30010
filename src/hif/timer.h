@@ -1,6 +1,7 @@
 #ifndef _DTU_TIMER_
 #define _DTU_TIMER_
 
-int initTimer(void (*handler));
+void initTimer();
+void startTimer();
 
 #endif /*! _DTU_TIMER_ */

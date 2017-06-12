@@ -1,6 +1,6 @@
 #include <eZ8.h>             // special encore constants, macros and flash routines
 
-void initTimer(void (*handler)) {
+void initTimer() {
 
   DI();
   // Init Timer and interrupt settings.
@@ -16,8 +16,11 @@ void initTimer(void (*handler)) {
   IRQ0ENH |= 0x20;
   IRQ0ENL |= 0x20;
   // ENABLE TIMER
-  SET_VECTOR(TIMER0, handler);
-  EI();
+  //SET_VECTOR(TIMER0, interruptHandler);
 
+}
+
+void startTimer() {
+  EI();
   T0CTL |= 0x80;
 }
