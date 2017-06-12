@@ -76,7 +76,7 @@ int menu(MenuItem items[]) {
         break;
       case 7: // PF6+PD3+PF7 clicked // Dunno what should happen here.
         if (lastClicked == 7) { continue; } // Guard against click spam.
-        lastClicked = 7; // This is the "BOSS KEY COMBO". we can return here.
+        return 1337;
         break;
 
     }

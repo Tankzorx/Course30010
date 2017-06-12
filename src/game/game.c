@@ -16,7 +16,6 @@ void interruptHandler() {
   }
 }
 
-
 void runGame() {
   MenuItem items[2] = {{2, "asd" }, {3, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}};
   // Init timer sets the reloadnumber etc.
@@ -29,11 +28,13 @@ void runGame() {
   while (1) {
     switch (state) {
       case 1: // renderMenu state
-	  	  menu(items);
-        state = 2;
+        state = menu(items);;
         break;
       case 2:
         state = 2;
+        break;
+      case 1337:
+        // BOSS STATE.
         break;
       default:
         break;
