@@ -1,5 +1,5 @@
-#include <eZ8.h>             // special encore constants, macros and flash routines
-#include <sio.h>             // special encore serial i/o routines
+#include <eZ8.h>
+#include <sio.h>s
 #include "console.h"
 
 #define ESC 0x1B
@@ -67,6 +67,13 @@ void clrscr() {
 
 void clreol() {
   printf("%c[K", ESC);
+}
+
+void printN(int n, char c) {
+  int i;
+  for (i = 0; i < n; i++) {
+    printf("%c", c);
+  };
 }
 
 void gotoxy(int x, int y) {

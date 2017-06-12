@@ -1,4 +1,4 @@
-#include <eZ8.h>             // special encore constants, macros and flash routines
+#include <eZ8.h>
 
 char readkey() {
   // PFIN:

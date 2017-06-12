@@ -1,5 +1,5 @@
-#include <eZ8.h>             // special encore constants, macros and flash routines
-#include <sio.h>             // special encore serial i/o routine
+#include <eZ8.h>
+#include <sio.h>
 
 #include "menu.h"
 #include "../hif/buttonInput.h"

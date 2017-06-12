@@ -1,4 +1,4 @@
-#include <sio.h>             // special encore serial i/o routine
+#include <sio.h>
 
 #include "./src/game/game.h"
 
