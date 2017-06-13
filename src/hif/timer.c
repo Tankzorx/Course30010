@@ -9,7 +9,7 @@ void initTimer() {
   T0H = 0x0;
   T0L = 0x1;
   // Set reload stuff 5A00
-  T0RH = 0x0A; // RH high
+  T0RH = 0x09; // RH high
   T0RL = 0x00; // RL low
 
   // ENABLE TIMER INTERRUPT Set to level 3.

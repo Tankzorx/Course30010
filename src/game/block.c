@@ -18,7 +18,7 @@ Block generateBlock() {
 void renderBlock(Block block) {
   int i;
   gotoxy(block.upperLeftX, block.upperLeftY);
-  for (i = 0; i < block.height; i++)
+  for (i = 0; i <= block.height; i++)
   {
     switch (block.durability) {
       case 1:
@@ -31,7 +31,7 @@ void renderBlock(Block block) {
         printN(block.width, 'C');
         break;
     }
-    gotoxy(block.upperLeftX, block.upperLeftY + 1);
+    gotoxy(block.upperLeftX, block.upperLeftY + i);
   }
   // Spin it baby.
   // while(1) {

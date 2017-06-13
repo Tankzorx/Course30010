@@ -9,4 +9,6 @@ typedef struct  {
 
 int menu(MenuItem items[]);
 
+// struct MenuItem[] generateMenu();
+
 #endif /*! _DTU_MENU_ */

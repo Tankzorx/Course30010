@@ -1,23 +1,41 @@
 #include <eZ8.h>
-#include <sio.h>
 
 #include "game.h"
 #include "block.h"
+#include "ball.h"
+#include "collision.h"
+#include "../hif/console.h"
+#include "../hif/buttonInput.h"
 #include "../hif/timer.h"
-#include "../api/menu.h"
 
 
-/* STATE TABLE:
- * 1    : Menu
- * 2    : Playing
- * 1337 : Boss mode
- *
- */
 
 int tickCounter = 1;
+int ms10Tick = 1;
+int ms100Tick = 1;
+int ms500Tick = 1;
+char readPosFlag = 0;
 #pragma interrupt
 void interruptHandler() {
   tickCounter++;
+  ms10Tick++;
+  ms100Tick++;
+  ms500Tick++;
+
+  if (ms10Tick > 10)
+  {
+    ms10Tick = 0;
+  }
+
+  if (ms100Tick > 100)
+  {
+    ms100Tick = 0;
+  }
+
+  if (ms500Tick > 500) {
+    ms500Tick = 0;
+  }
+
   if (tickCounter > 1000)
   {
     // printf("TICKED TIMER.\n");
@@ -25,12 +43,26 @@ void interruptHandler() {
   }
 }
 
-void runGame() {
+// gameState som input skal nok gøres senere.
+int game() {
   int i, j;
+  int moves[4] = { 1, 1, 1, 0 };
+  int collisionState;
+  Movement movement;
+  int state = 0;
   Block blockMap[30];
+  Ball ball;
   Block b;
-  MenuItem items[2] = {{2, "asd" }, {3, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}};
-  int state = 2; // renderMenu=1, waitForPlaySelection, playing, lost
+
+  for (i = 0; i < sizeof(moves); i++)
+  {
+    movement.movePattern[i] = moves[i];
+  }
+  movement.currentMove = 0;
+
+  ball.radius = 1;
+  ball.xPos = 50;
+  ball.yPos = 60;
 
   // This is one way of generating the blockMap:
   // (Shorthand version of struct creation didn't work.)
@@ -38,39 +70,89 @@ void runGame() {
   for (i = 0; i < 3; i++) {
     // Columns
     for (j = 0; j < 10; j++) {
-      b.upperLeftX = j*7; // 7 - width = horizontal distance between blocks
-      b.upperLeftY = i*7; // 7- height = vertical distance between blocks.
-      b.width = 4;
-      b.height = 2;
+      b.upperLeftX = j*17; // 7 - width = horizontal distance between blocks
+      b.upperLeftY = i*15; // 7- height = vertical distance between blocks.
+      b.width = 10;
+      b.height = 8;
       b.durability = 3;
       b.indestructible = 1;
-      blockMap[i + j] = b;
+      blockMap[i*10 + j] = b;
     }
   }
-  // Init timer sets the reloadnumber etc.
-  // We want to set it up so that the timer is interrupts every millisecond.
+
   initTimer();
   SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
   startTimer();
 
-  while (1) {
-    switch (state) {
-      case 1: // render menu state
-        state = menu(items);
-        break;
-      case 2:
-        for (i = 0; i < 30; i++)
-        {
-          renderBlock(blockMap[i]);
+  clrscr();
+  for (i = 0; i < 30; i++)
+  {
+    renderBlock(blockMap[i]);
+  }
+
+  while(1) {
+    if (ms100Tick == 0)
+    {
+      // moveBallRightN(&ball, 1);
+      // moveBallUpN(&ball, 1);
+      // moveBall(&ball, movePattern);
+      switch (movement.movePattern[movement.currentMove]) {
+        case 0:
+          moveBallUpN(&ball, 1);
+          break;
+        case 1:
+          moveBallRightN(&ball, 1);
+          break;
+        case 2:
+          moveBallLeftN(&ball, 1);
+          break;
+        case 3:
+          moveBallDownN(&ball, 1);
+          break;
+        default: 
+          break;
+      }
+      movement.currentMove++;
+      if (movement.currentMove == 4)
+      {
+        movement.currentMove = 0;
+      }
+      for (i = 0; i < sizeof(blockMap); i++)
+      {
+        // collisionState = detectCollisionBallBlock(blockMap[i], ball);
+        switch (detectCollisionBallBlock(blockMap[i], ball)) {
+          case 0: // No collision
+            break;
+          case 2:
+            while (1) {
+              // Spin it baby!
+            }
+            break;
         }
-        return; // Premature return for testing.
-        state = 2;
-        break;
-      case 1337:
-        // BOSS STATE.
-        break;
-      default:
-        break;
-    };
+      }
+    }
+    // switch (state) {
+    //   case 0:
+    //     renderBall(&ball);
+    //     state = 1;
+    //     break;
+    //   case 1:
+    //     switch (readkey()) {
+    //       case 1: // PF7
+    //         break;
+
+    //       case 2: // PF6 clicked 
+
+    //         break;
+
+    //       case 4:
+
+    //         break;
+
+    //       default:
+    //         break;
+    //     }
+    //     break;
+    // }
   }
 }
