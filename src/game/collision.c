@@ -3,7 +3,13 @@
 #include "ball.h"
 #include "block.h"
 
-
+/*
+ * 0: No collision
+ * 1: Hit left side
+ * 2: Hit bottom side
+ * 3: Hit right side
+ * 4: Hit top side
+ */
 int detectCollisionBallBlock(Block block, Ball ball) {
 	// Ball is completely outside block range.
 	if (ball.xPos < block.upperLeftX || 

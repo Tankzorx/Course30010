@@ -23,6 +23,12 @@
 <file filter-key="">src\game\ball.h</file>
 <file filter-key="">src\game\collision.c</file>
 <file filter-key="">src\game\collision.h</file>
+<file filter-key="">src\api\sincos.c</file>
+<file filter-key="">src\api\sincos.h</file>
+<file filter-key="">src\api\vector.c</file>
+<file filter-key="">src\api\vector.h</file>
+<file filter-key="">src\api\LUT.c</file>
+<file filter-key="">src\api\LUT.h</file>
 </files>
 
 <!-- configuration information -->

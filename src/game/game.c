@@ -12,6 +12,7 @@
 
 int tickCounter = 1;
 int ms10Tick = 1;
+int ms50Tick = 1;
 int ms100Tick = 1;
 int ms500Tick = 1;
 char readPosFlag = 0;
@@ -19,6 +20,7 @@ char readPosFlag = 0;
 void interruptHandler() {
   tickCounter++;
   ms10Tick++;
+  ms50Tick++;
   ms100Tick++;
   ms500Tick++;
 
@@ -26,6 +28,11 @@ void interruptHandler() {
   {
     ms10Tick = 0;
   }
+
+  if (ms50Tick > 50)
+  {
+    ms50Tick = 0;
+  }  
 
   if (ms100Tick > 100)
   {
@@ -70,8 +77,8 @@ int game() {
   for (i = 0; i < 3; i++) {
     // Columns
     for (j = 0; j < 10; j++) {
-      b.upperLeftX = j*17; // 7 - width = horizontal distance between blocks
-      b.upperLeftY = i*15; // 7- height = vertical distance between blocks.
+      b.upperLeftX = 15+j*12; // 7 - width = horizontal distance between blocks
+      b.upperLeftY = 5+i*10; // 7- height = vertical distance between blocks.
       b.width = 10;
       b.height = 8;
       b.durability = 3;
@@ -123,10 +130,14 @@ int game() {
         switch (detectCollisionBallBlock(blockMap[i], ball)) {
           case 0: // No collision
             break;
-          case 2:
-            while (1) {
-              // Spin it baby!
-            }
+          case 2: // Hit bottom
+            movement.movePattern[0] = 3;
+            movement.movePattern[1] = 1;
+            movement.movePattern[2] = 1;
+            movement.movePattern[3] = 1;
+            // while (1) {
+            //   // Spin it baby!
+            // }
             break;
         }
       }
