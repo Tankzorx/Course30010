@@ -59,6 +59,7 @@ int game() {
   Vector initBallPosition;
   int moves[4] = { 1, 1, 1, 0 };
   int collisionState;
+  // long collisionStateAUX;
   // Movement movement;
   int state = 0;
   Block blockMap[30];
@@ -70,10 +71,10 @@ int game() {
   // ball.xPos = 50;
   // ball.yPos = 60;
   // 18.14 format
-  initBallPosition.x = 50 << 14;
-  initBallPosition.y = 60 << 14;
-  initBallVelocity.x = 1 << 7; // 0.1 speed?
-  initBallVelocity.y = -1 << 7; // 0.1 speed?
+  initBallPosition.x = 54 << 14;
+  initBallPosition.y = 55 << 14;
+  initBallVelocity.x = 0 << 7;
+  initBallVelocity.y = -1 << 13;
   ball.position = initBallPosition;
   ball.velocity = initBallVelocity;
   ball.lastRenderPosition = initBallPosition;
@@ -88,8 +89,8 @@ int game() {
       auxVector.x = (long)(15+j*12) << 14;
       auxVector.y = (long)(5+i*10) << 14;
       b.position = auxVector;
-      b.width = 10;
-      b.height = 8;
+      b.width = 10 << 14;
+      b.height = 8 << 14;
       b.durability = 3;
       b.indestructible = 1;
       blockMap[i*10 + j] = b;
@@ -112,10 +113,21 @@ int game() {
   while(1) {
     if (ms50Tick == 0) {
       moveBall(&ball);
-      collisionState = detectCollisionBallBlock(blockMap[i], ball);
+      for (i = 0; i < 30; i++)
+      {
+        collisionState = detectCollisionBallBlock(blockMap[i], ball);
+        if (collisionState > 0)
+        {
+          flipY(&ball.velocity);
+          gotoxy(60,60); // TEST COLLISION.
+          printf("Block nr: %d\n", i);
+          printf("Collision state: %d\n", collisionState);
+          // return;
+        }
+      }
     }
 
-    if (ms100Tick == 0)
+    if (ms50Tick == 0)
     {
       clearBall(&ball);
       renderBall(&ball);

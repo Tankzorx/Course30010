@@ -8,8 +8,8 @@
 typedef struct
 {
   Vector position;
-  int width;
-  int height;
+  long width;
+  long height;
   int durability; // How many hits can this thing take?
   int indestructible; // For wall blocks.
 } Block;

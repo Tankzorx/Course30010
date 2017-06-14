@@ -20,17 +20,17 @@
 void renderBlock(Block block) {
   int i;
   gotoxy(block.position.x >> 14, block.position.y >> 14);
-  for (i = 0; i <= block.height; i++)
+  for (i = 0; i <= block.height >> 14; i++)
   {
     switch (block.durability) {
       case 1:
-        printN(block.width, 'A');
+        printN(block.width >> 14, 'A');
         break;
       case 2:
-        printN(block.width, 'B');
+        printN(block.width >> 14, 'B');
         break;
       case 3:
-        printN(block.width, 'C');
+        printN(block.width >> 14, 'C');
         break;
     }
     gotoxy(block.position.x >> 14, (block.position.y >> 14) + i);
