@@ -4,6 +4,7 @@
 #include "../hif/console.h"
 #include <sio.h>
 #include "ball.h"
+#include "striker.h"
 #include "block.h"
 
 // long abs(long a) {
@@ -77,9 +78,46 @@ int detectCollisionBallBlock(Block block, Ball ball) {
 	{
 		return 4;
 	}
-	
-
-
 	return -1;
-
 }
+
+int detectCollisionBallStriker(Striker striker,Ball ball) {
+	int i;
+    long epsilon = (long) 1 << 13;
+
+    // Ball too high up
+    if (ball.position.y < (striker.position.y - epsilon)){
+    	return -1;
+    }
+
+    // Ball too low down
+    if (ball.position.y > (striker.position.y)){
+    	return -1;
+    }
+
+    // Ball too far left
+    if (ball.position.x < striker.position.x) {
+    	return -1;
+    }
+
+    // Ball too far right (Capitalist pig.)
+    if (ball.position.x > striker.position.x + striker.width) {
+    	return -1;
+    }
+
+    // Optimize?
+	for (i = 0; i < (striker.width >> 14); i++)
+	{
+        gotoxy(60,60);
+		printf("(%d, %d)\n", ball.position.x >> 14, ball.position.y >> 14);
+		return;
+		if (ball.position.x > (striker.position.x + (i << 14)) &&
+			ball.position.x < (striker.position.x + ((i + 1)) << 14))
+		{
+			return i;
+		}		
+	}
+	// Should never be here.
+	return -1;
+}
+

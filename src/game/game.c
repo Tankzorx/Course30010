@@ -64,6 +64,7 @@ int game() {
   Vector initBallPosition;
   int moves[4] = { 1, 1, 1, 0 };
   int collisionState;
+  int collisionStateStriker;
   // long collisionStateAUX;
   // Movement movement;
   int state = 0;
@@ -116,6 +117,14 @@ int game() {
       // Move striker and detect collision between ball&striker
       keyRead = readkey();
       moveStriker(&striker, keyRead);
+
+      collisionStateStriker = detectCollisionBallStriker(striker, ball);
+      if (collisionStateStriker > -1)
+      {
+        gotoxy(60,60);
+        printf("collisionStateStriker: %d\n", collisionStateStriker);
+        return;
+      }
     }
 
     if (ms100Tick == 0)
