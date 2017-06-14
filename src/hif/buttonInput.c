@@ -13,5 +13,5 @@ char readkey() {
   PF7DTU = (PF7DTU >> 7) & 0x1;
   PF6DTU = (PF6DTU >> 5) & 0x2;
   PD3DTU = PD3DTU  >> 1;
-  return PF7DTU | PF6DTU | PD3DTU;
+  return PD3DTU | PF6DTU | PF7DTU;
 }

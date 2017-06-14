@@ -3,19 +3,64 @@
 
 #include "block.h"
 #include "../hif/console.h"
+#include "../api/vector.h"
 
-// Block generateBlock() {
-//   Block block;
-//   Vector position;
-//   position.x = 15 << 14;
-//   position.y = 5 << 14;
-//   block.position = position;
-//   block.width = 4;
-//   block.height = 2;
-//   block.durability = 3;
-//   block.indestructible = 1;
-//   return block;
-// }
+void generateDefaultBlockMap(Block blockMap[]) {
+  int i,j;
+  Vector auxVector;
+  // Block blockMap[30];
+  Block b;
+  // This is one way of generating the blockMap:
+  // (Shorthand version of struct creation didn't work.)
+  // Rows
+  // for (i = 0; i < 3; i++) {
+  //   // Columns
+  //   for (j = 0; j < 10; j++) {
+  //     auxVector.x = (long)(15+j*12) << 14;
+  //     auxVector.y = (long)(5+i*10) << 14;
+  //     b.position = auxVector;
+  //     b.width = 10 << 14;
+  //     b.height = 8 << 14;
+  //     b.durability = 3;
+  //     b.indestructible = 1;
+  //     blockMap[i*10 + j] = b;
+  //   }
+  // }
+  auxVector.x = (long)(0) << 14;
+  auxVector.y = (long)(0) << 14;
+  b.position = auxVector;
+  b.width = 3 << 14;
+  b.height = 70 << 14;
+  b.durability = 3;
+  b.indestructible = 1;   
+  blockMap[0] = b;
+
+  auxVector.x = (long)(195) << 14;
+  auxVector.y = (long)(0) << 14;
+  b.position = auxVector;
+  b.width = 3 << 14;
+  b.height = 70 << 14;
+  b.durability = 3;
+  b.indestructible = 1;   
+  blockMap[1] = b;
+
+  auxVector.x = (long)(0) << 14;
+  auxVector.y = (long)(0) << 14;
+  b.position = auxVector;
+  b.width = 195 << 14;
+  b.height = 3 << 14;
+  b.durability = 3;
+  b.indestructible = 1;   
+  blockMap[2] = b;
+
+
+  b.indestructible = 3;
+  blockMap[99] = b;
+
+  // return &blockMap[0];
+}
+
+
 
 void renderBlock(Block block) {
   int i;
@@ -39,5 +84,13 @@ void renderBlock(Block block) {
   // while(1) {
   //   continue;
   // }
+}
+
+void renderBlockMap(Block blockMap[]) {
+  int i;
+  for (i = 0; i < blockMap[99].indestructible; i++)
+  {
+    renderBlock(blockMap[i]);
+  }
 }
 

@@ -9,6 +9,7 @@
 #include "../hif/console.h"
 #include "../hif/buttonInput.h"
 #include "../hif/timer.h"
+#include "striker.h"
 
 
 
@@ -52,8 +53,12 @@ void interruptHandler() {
   }
 }
 
+
+
 // gameState som input skal nok gøres senere.
 int game() {
+  Striker striker;
+  char keyRead;
   int i, j;
   Vector initBallVelocity;
   Vector initBallPosition;
@@ -62,40 +67,29 @@ int game() {
   // long collisionStateAUX;
   // Movement movement;
   int state = 0;
-  Block blockMap[30];
+  Block blockMap[100];
   Ball ball;
   Block b;
   Vector auxVector;
+
+  // Initialize striker
+  striker.position.x = 90 << 14;
+  striker.position.y = 70 << 14;
+  striker.width = 15 << 14;
 
   ball.radius = 1;
   // ball.xPos = 50;
   // ball.yPos = 60;
   // 18.14 format
-  initBallPosition.x = 54 << 14;
-  initBallPosition.y = 55 << 14;
-  initBallVelocity.x = 1 << 13;
-  initBallVelocity.y = -1 << 13;
+  initBallPosition.x = 35 << 14;
+  initBallPosition.y = 40 << 14;
+  initBallVelocity.x = 6 << 7;
+  initBallVelocity.y = 6 << 7;
   ball.position = initBallPosition;
   ball.velocity = initBallVelocity;
   ball.lastRenderPosition = initBallPosition;
 
-
-  // This is one way of generating the blockMap:
-  // (Shorthand version of struct creation didn't work.)
-  // Rows
-  for (i = 0; i < 3; i++) {
-    // Columns
-    for (j = 0; j < 10; j++) {
-      auxVector.x = (long)(15+j*12) << 14;
-      auxVector.y = (long)(5+i*10) << 14;
-      b.position = auxVector;
-      b.width = 10 << 14;
-      b.height = 8 << 14;
-      b.durability = 3;
-      b.indestructible = 1;
-      blockMap[i*10 + j] = b;
-    }
-  }
+  generateDefaultBlockMap(blockMap);
 
   initTimer();
   SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
@@ -105,93 +99,31 @@ int game() {
   gotoxy(10,10);
   // printf("Block position: (%d, %d)\n", blockMap[0].position.x >> 14, blockMap[0].position.y >> 14);
   // return;
-  for (i = 0; i < 30; i++)
-  {
-    renderBlock(blockMap[i]);
-  }
+  renderBlockMap(blockMap);
+  renderStriker(&striker);
 
   while(1) {
-    if (ms50Tick == 0) {
+    if (ms10Tick == 0) {
+      // Move ball and detect collision between ball&blocks.
       moveBall(&ball);
-      for (i = 0; i < 30; i++)
+      for (i = 0; i < blockMap[99].indestructible; i++)
       {
         collisionState = detectCollisionBallBlock(blockMap[i], ball);
         handleBlockCollision(&ball, collisionState);
         // break loop when collisionstate > 0.
       }
+
+      // Move striker and detect collision between ball&striker
+      keyRead = readkey();
+      moveStriker(&striker, keyRead);
     }
 
-    if (ms50Tick == 0)
+    if (ms100Tick == 0)
     {
       clearBall(&ball);
       renderBall(&ball);
-      // moveBall(&ball);      
-
-
-      // moveBallRightN(&ball, 1);
-      // moveBallUpN(&ball, 1);
-      // moveBall(&ball, movePattern);
-      // switch (movement.movePattern[movement.currentMove]) {
-      //   case 0:
-      //     moveBallUpN(&ball, 1);
-      //     break;
-      //   case 1:
-      //     moveBallRightN(&ball, 1);
-      //     break;
-      //   case 2:
-      //     moveBallLeftN(&ball, 1);
-      //     break;
-      //   case 3:
-      //     moveBallDownN(&ball, 1);
-      //     break;
-      //   default: 
-      //     break;
-      // }
-      // movement.currentMove++;
-      // if (movement.currentMove == 4)
-      // {
-      //   movement.currentMove = 0;
-      // }
-      // for (i = 0; i < sizeof(blockMap); i++)
-      // {
-        // collisionState = detectCollisionBallBlock(blockMap[i], ball);
-        // switch (detectCollisionBallBlock(blockMap[i], ball)) {
-          // case 0: // No collision
-            // break;
-          // case 2: // Hit bottom
-            // movement.movePattern[0] = 3;
-            // movement.movePattern[1] = 1;
-            // movement.movePattern[2] = 1;
-            // movement.movePattern[3] = 1;
-            // while (1) {
-            //   // Spin it baby!
-            // }
-            // break;
-        // }
-      // }
+      clearStriker(&striker);
+      renderStriker(&striker);
     }
-    // switch (state) {
-    //   case 0:
-    //     renderBall(&ball);
-    //     state = 1;
-    //     break;
-    //   case 1:
-    //     switch (readkey()) {
-    //       case 1: // PF7
-    //         break;
-
-    //       case 2: // PF6 clicked 
-
-    //         break;
-
-    //       case 4:
-
-    //         break;
-
-    //       default:
-    //         break;
-    //     }
-    //     break;
-    // }
   }
 }

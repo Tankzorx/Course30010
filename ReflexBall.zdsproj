@@ -29,6 +29,8 @@
 <file filter-key="">src\api\vector.h</file>
 <file filter-key="">src\api\LUT.c</file>
 <file filter-key="">src\api\LUT.h</file>
+<file filter-key="">src\game\striker.c</file>
+<file filter-key="">src\game\striker.h</file>
 </files>
 
 <!-- configuration information -->

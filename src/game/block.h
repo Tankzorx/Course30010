@@ -17,7 +17,8 @@ typedef struct
 
 void renderBlock(Block block);
 
-
+Block* generateDefaultBlockMap();
+void renderBlockMap(Block blockMap[]);
 // Block generateBlock();
 
 #endif /*! _DTU_BLOCK_ */

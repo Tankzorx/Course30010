@@ -48,10 +48,14 @@ void renderBall(Ball* ball) {
 void handleBlockCollision(Ball* ballPtr, int collisionState) {
 	switch (collisionState) {
 		case 1: // left
+			flipX(&(ballPtr->velocity));
+			break;
 		case 3: // right
 			flipX(&(ballPtr->velocity));
 			break;
 		case 2:
+			flipY(&(ballPtr->velocity));
+			break;
 		case 4:
 			flipY(&(ballPtr->velocity));
 			break;
