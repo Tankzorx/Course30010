@@ -3,10 +3,11 @@
 
 // Should be moved to more generic lib. dno where?
 
+#include "../api/vector.h"
+
 typedef struct
 {
-  int upperLeftX;
-  int upperLeftY;
+  Vector position;
   int width;
   int height;
   int durability; // How many hits can this thing take?
@@ -17,6 +18,6 @@ typedef struct
 void renderBlock(Block block);
 
 
-Block generateBlock();
+// Block generateBlock();
 
 #endif /*! _DTU_BLOCK_ */

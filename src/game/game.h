@@ -8,11 +8,11 @@
  * 2: left
  * 3: down
  */
-typedef struct
-{
-  int movePattern[4];
-  int currentMove;
-} Movement;
+// typedef struct
+// {
+//   int movePattern[4];
+//   int currentMove;
+// } Movement;
 
 int game();
 

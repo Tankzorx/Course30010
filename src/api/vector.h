@@ -4,10 +4,8 @@
 
 typedef struct
 {
-  int x;
-  int y;
+  long x;
+  long y;
 } Vector;
-
-
 
 #endif /*! _DTU_VECTOR_ */

@@ -4,20 +4,22 @@
 #include "block.h"
 #include "../hif/console.h"
 
-Block generateBlock() {
-  Block block;
-  block.upperLeftX = 15;
-  block.upperLeftY = 5;
-  block.width = 4;
-  block.height = 2;
-  block.durability = 3;
-  block.indestructible = 1;
-  return block;
-}
+// Block generateBlock() {
+//   Block block;
+//   Vector position;
+//   position.x = 15 << 14;
+//   position.y = 5 << 14;
+//   block.position = position;
+//   block.width = 4;
+//   block.height = 2;
+//   block.durability = 3;
+//   block.indestructible = 1;
+//   return block;
+// }
 
 void renderBlock(Block block) {
   int i;
-  gotoxy(block.upperLeftX, block.upperLeftY);
+  gotoxy(block.position.x >> 14, block.position.y >> 14);
   for (i = 0; i <= block.height; i++)
   {
     switch (block.durability) {
@@ -31,7 +33,7 @@ void renderBlock(Block block) {
         printN(block.width, 'C');
         break;
     }
-    gotoxy(block.upperLeftX, block.upperLeftY + i);
+    gotoxy(block.position.x >> 14, (block.position.y >> 14) + i);
   }
   // Spin it baby.
   // while(1) {
