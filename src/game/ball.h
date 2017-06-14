@@ -20,6 +20,8 @@ typedef struct
 
 void moveBall(Ball* ball);
 
+void handleBlockCollision(Ball* ballPtr, int collisionState);
+
 void clearBall(Ball* ball);
 void renderBall(Ball* ball);
 

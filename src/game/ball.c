@@ -44,3 +44,18 @@ void renderBall(Ball* ball) {
     gotoxy(ball->position.x >> 14, ball->position.y >> 14);
     printf("O");
 }
+
+void handleBlockCollision(Ball* ballPtr, int collisionState) {
+	switch (collisionState) {
+		case 1: // left
+		case 3: // right
+			flipX(&(ballPtr->velocity));
+			break;
+		case 2:
+		case 4:
+			flipY(&(ballPtr->velocity));
+			break;
+		default: 
+			break;
+	}
+}

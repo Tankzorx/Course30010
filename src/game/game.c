@@ -73,7 +73,7 @@ int game() {
   // 18.14 format
   initBallPosition.x = 54 << 14;
   initBallPosition.y = 55 << 14;
-  initBallVelocity.x = 0 << 7;
+  initBallVelocity.x = 1 << 13;
   initBallVelocity.y = -1 << 13;
   ball.position = initBallPosition;
   ball.velocity = initBallVelocity;
@@ -116,14 +116,8 @@ int game() {
       for (i = 0; i < 30; i++)
       {
         collisionState = detectCollisionBallBlock(blockMap[i], ball);
-        if (collisionState > 0)
-        {
-          flipY(&ball.velocity);
-          gotoxy(60,60); // TEST COLLISION.
-          printf("Block nr: %d\n", i);
-          printf("Collision state: %d\n", collisionState);
-          // return;
-        }
+        handleBlockCollision(&ball, collisionState);
+        // break loop when collisionstate > 0.
       }
     }
 
