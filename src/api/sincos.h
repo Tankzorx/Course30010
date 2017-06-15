@@ -1,13 +1,15 @@
 #ifndef _DTU_SINCOS_
 #define _DTU_SINCOS_
 
+#include "vector.h"
+
 void printFix(long i);
 
 long expand(long i);
 
 signed short sin(int i);
 
-// signed short cos(int i);
+signed short cos(int i);
 
 
 #endif /*! _DTU_SINCOS_ */

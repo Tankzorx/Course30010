@@ -16,4 +16,8 @@ typedef struct
 void flipX(Vector* vector);
 void flipY(Vector* vector);
 
+long dotP(Vector v1, Vector v2);
+
+void rotate(Vector* vector, int angle);
+
 #endif /*! _DTU_VECTOR_ */

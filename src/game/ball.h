@@ -16,7 +16,8 @@ typedef struct
 void moveBall(Ball* ball);
 
 void handleBlockCollision(Ball* ballPtr, int collisionState);
-void handleStrikerCollision(Ball* ballPtr, Striker striker, int collisionArea);
+void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea);
+void moveUpEpsilonBall(Ball* ball);
 
 void clearBall(Ball* ball);
 void renderBall(Ball* ball);
