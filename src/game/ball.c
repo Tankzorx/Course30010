@@ -63,3 +63,12 @@ void handleBlockCollision(Ball* ballPtr, int collisionState) {
 			break;
 	}
 }
+
+void handleStrikerCollision(Ball* ballPtr, Striker striker, int collisionArea) {
+	// collisionArea is a number from 0 to striker.width. 0 means the striker was hit on the left
+	// striker.width means to the right.
+	
+	// First flip y
+	flipY(&(ballPtr->velocity));
+	// Then modify based on where the ball hit.
+}

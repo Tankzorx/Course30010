@@ -5,7 +5,7 @@
 #include "../hif/console.h"
 #include "../api/vector.h"
 
-void generateDefaultBlockMap(Block blockMap[]) {
+void generateWalls(Block blockMap[]) {
   int i,j;
   Vector auxVector;
   // Block blockMap[30];

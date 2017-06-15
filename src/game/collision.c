@@ -83,6 +83,7 @@ int detectCollisionBallBlock(Block block, Ball ball) {
 
 int detectCollisionBallStriker(Striker striker,Ball ball) {
 	int i;
+	long j;
     long epsilon = (long) 1 << 13;
 
     // Ball too high up
@@ -108,11 +109,9 @@ int detectCollisionBallStriker(Striker striker,Ball ball) {
     // Optimize?
 	for (i = 0; i < (striker.width >> 14); i++)
 	{
-        gotoxy(60,60);
-		printf("(%d, %d)\n", ball.position.x >> 14, ball.position.y >> 14);
-		return;
-		if (ball.position.x > (striker.position.x + (i << 14)) &&
-			ball.position.x < (striker.position.x + ((i + 1)) << 14))
+		j = i;
+		if (ball.position.x > (striker.position.x + (j << 14)) &&
+			ball.position.x < (striker.position.x + ((j + 1) << 14)))
 		{
 			return i;
 		}		

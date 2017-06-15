@@ -17,7 +17,7 @@ typedef struct
 
 void renderBlock(Block block);
 
-Block* generateDefaultBlockMap();
+Block* generateWalls();
 void renderBlockMap(Block blockMap[]);
 // Block generateBlock();
 

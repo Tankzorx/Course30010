@@ -90,7 +90,7 @@ int game() {
   ball.velocity = initBallVelocity;
   ball.lastRenderPosition = initBallPosition;
 
-  generateDefaultBlockMap(blockMap);
+  generateWalls(blockMap);
 
   initTimer();
   SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
@@ -121,9 +121,9 @@ int game() {
       collisionStateStriker = detectCollisionBallStriker(striker, ball);
       if (collisionStateStriker > -1)
       {
-        gotoxy(60,60);
-        printf("collisionStateStriker: %d\n", collisionStateStriker);
-        return;
+        
+        handleStrikerCollision(&ball, striker, collisionStateStriker);
+        // return;
       }
     }
 

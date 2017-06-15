@@ -3,6 +3,7 @@
 
 // Should be moved to more generic lib. dno where?
 #include "../api/vector.h"
+#include "striker.h"
 
 typedef struct
 {
@@ -12,15 +13,10 @@ typedef struct
   int radius;
 } Ball;
 
-
-// void moveBallRightN(Ball*  ball, int n);
-// void moveBallLeftN(Ball*  ball, int n);
-// void moveBallUpN(Ball*  ball, int n);
-// void moveBallDownN(Ball*  ball, int n);
-
 void moveBall(Ball* ball);
 
 void handleBlockCollision(Ball* ballPtr, int collisionState);
+void handleStrikerCollision(Ball* ballPtr, Striker striker, int collisionArea);
 
 void clearBall(Ball* ball);
 void renderBall(Ball* ball);
