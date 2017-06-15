@@ -65,6 +65,14 @@ void handleBlockCollision(Ball* ballPtr, int collisionState) {
 	}
 }
 
+int ballIsDead(Ball ball, int screenHeight) {
+	if ((ball.position.y >> 14) > screenHeight)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) {
 	// Vector test;
 	// gotoxy(100,38);

@@ -16,6 +16,7 @@
 
 int tickCounter = 1;
 int ms10Tick = 1;
+int blocksAlive = 0;
 int ms50Tick = 1;
 int ms100Tick = 1;
 int ms500Tick = 1;
@@ -34,7 +35,6 @@ void interruptHandler() {
   {
     ms10Tick = 0;
     moveFlag = 1;
-    strikerMoveFlag = 1;
   }
 
   if (ms50Tick > 50)
@@ -44,6 +44,7 @@ void interruptHandler() {
 
   if (ms100Tick > 100)
   {
+    strikerMoveFlag = 1;
     ms100Tick = 0;
   }
 
@@ -78,17 +79,16 @@ int game() {
   Vector auxVector;
 
   // Initialize striker
-  striker.position.x = 60 << 14;
+  striker.position.x = 65 << 14;
   striker.position.y = 70 << 14;
   striker.width = ((long) 0x0F) << 14;
 
+  // Not used currently.
   ball.radius = 1;
-  // ball.xPos = 50;
-  // ball.yPos = 60;
   // 18.14 format
   initBallPosition.x = 70 << 14;
   initBallPosition.y = 60 << 14;
-  initBallVelocity.x = 3 << 14;
+  initBallVelocity.x = 0 << 14;
   initBallVelocity.y = 3 << 14;
   //initBallVelocity.y = 2<<14;
   // initBallVelocity.y = (~initBallVelocity.y)+1;
@@ -98,7 +98,8 @@ int game() {
   ball.lastRenderPosition = initBallPosition;
 
   generateWalls(blockMap);
-
+  generateDefaultMap(blockMap);
+   
   initTimer();
   SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
   startTimer();
@@ -114,47 +115,60 @@ int game() {
     if (moveFlag == 1) {
       // Move ball and detect collision between ball&blocks.
       moveBall(&ball);
-      for (i = 0; i < blockMap[99].indestructible; i++)
+
+      if (ballIsDead(ball, 70) == 1)
       {
-        collisionState = detectCollisionBallBlock(blockMap[i], ball);
-        handleBlockCollision(&ball, collisionState);
-        // break loop when collisionstate > 0.
+        return 1; // return menu state for now.
       }
 
-      // Move striker and detect collision between ball&striker
+      for (i = 0; i < blockMap[99].indestructible; i++)
+      {
+        if (blockMap[i].durability > 0 &&
+            blockMap[i].indestructible == 0)
+        {
+          blocksAlive = 1;
+        }
+        collisionState = detectCollisionBallBlock(blockMap[i], ball);
+        handleBlockCollision(&ball, collisionState);
+        if (collisionState > 0)
+        {
+          if (blockMap[i].indestructible == 0)
+          {
+            blockMap[i].durability = blockMap[i].durability - 1;
+            renderBlock(blockMap[i]);
+          }
+          break;
+        }
+      }
 
+      // If blocksAlive is 0, then no destructible block is alive.
+      if (blocksAlive == 0)
+      {
+        return 1;
+      }
+      blocksAlive = 0;
+
+
+      // Move striker and detect collision between ball&striker
       collisionStateStriker = detectCollisionBallStriker(striker, ball);
       if (collisionStateStriker > -1)
       {
-        // gotoxy(100,31);
-        // printf("STRIKER WIDTH LONG: %ld\n", striker.width >> 14);
-        // printFix(ball.velocity.x << 2);
-        // printFix(ball.velocity.y << 2);
         handleStrikerCollision(&ball, &striker, collisionStateStriker);
         moveUpEpsilonBall(&ball);
-        // gotoxy(100,32);
-        // printf("STRIKER WIDTH LONG: %ld\n", striker.width >> 14);
-        // printFix(ball.velocity.x << 2);
-        // printFix(ball.velocity.y << 2);
-        // return;
-        // return;
       }
+      keyRead = readkey();
+      moveStriker(&striker, keyRead);
       moveFlag = 0;
     }
 
     if (strikerMoveFlag)
     {
-      keyRead = readkey();
-      moveStriker(&striker, keyRead);
-      strikerMoveFlag = 0;
-    }
 
-    if (ms100Tick == 0)
-    {
       clearBall(&ball);
       renderBall(&ball);
       clearStriker(&striker);
       renderStriker(&striker);
+      strikerMoveFlag = 0;
     }
   }
 }

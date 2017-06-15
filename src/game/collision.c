@@ -21,6 +21,10 @@
 int detectCollisionBallBlock(Block block, Ball ball) {
 	long epsilon = (long) 1 << 13; // We need some variable to define a
 
+	if (block.durability == 0)
+	{
+		return -1;
+	}
 	// Ball hit left side We can no longer check 
 	// If ball position is exactly on a coordinate,
 	// as we're using fixed points.
