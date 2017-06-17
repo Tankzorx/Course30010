@@ -33,6 +33,8 @@
 <file filter-key="">src\game\striker.h</file>
 <file filter-key="">src\api\boss.c</file>
 <file filter-key="">src\api\boss.h</file>
+<file filter-key="">src\game\highscore.c</file>
+<file filter-key="">src\game\highscore.h</file>
 </files>
 
 <!-- configuration information -->

@@ -13,56 +13,56 @@
 #include "../hif/timer.h"
 #include "striker.h"
 
-int tickCounter = 1;
-int ms10Tick = 1;
-int blocksAlive = 0;
-int ms50Tick = 1;
-int ms100Tick = 1;
-int debounceGuard = 1;
-int moveFlag = 0;
-int strikerMoveFlag = 0;
+// int tickCounter = 1;
+// int ms10Tick = 1;
+// int ms50Tick = 1;
+// int ms100Tick = 1;
+// int debounceGuard = 1;
+// int moveFlag = 0;
+// int strikerMoveFlag = 0;
 char readPosFlag = 0;
-#pragma interrupt
-void interruptHandler() {
-  tickCounter++;
-  ms10Tick++;
-  ms50Tick++;
-  ms100Tick++;
-  debounceGuard++;
+// #pragma interrupt
+// void interruptHandler() {
+//   tickCounter++;
+//   ms10Tick++;
+//   ms50Tick++;
+//   ms100Tick++;
+//   debounceGuard++;
 
-  if (ms10Tick > 10)
-  {
-    ms10Tick = 0;
-    moveFlag = 1;
-  }
+//   if (ms10Tick > 10)
+//   {
+//     ms10Tick = 0;
+//     moveFlag = 1;
+//   }
 
-  if (ms50Tick > 50)
-  {
-    ms50Tick = 0;
-  }  
+//   if (ms50Tick > 50)
+//   {
+//     ms50Tick = 0;
+//   }  
 
-  if (ms100Tick > 100)
-  {
-    strikerMoveFlag = 1;
-    ms100Tick = 0;
-  }
+//   if (ms100Tick > 100)
+//   {
+//     strikerMoveFlag = 1;
+//     ms100Tick = 0;
+//   }
 
-  if (debounceGuard > 500) {
-    debounceGuard = 0;
-  }
+//   if (debounceGuard > 500) {
+//     debounceGuard = 0;
+//   }
 
-  if (tickCounter > 1000)
-  {
-    // printf("TICKED TIMER.\n");
-    tickCounter = 0;
-  }
-}
+//   if (tickCounter > 1000)
+//   {
+//     // printf("TICKED TIMER.\n");
+//     tickCounter = 0;
+//   }
+// }
 
 
 
 // gameState som input skal nok gøres senere.
-int game() {
+int game(int* moveFlag, int* debounceGuard, int* strikerMoveFlag, int* currentPlayerScore) {
   Striker striker;
+  int blocksAlive = 0;
   char keyRead;
   int i, j;
   Vector initBallVelocity;
@@ -76,9 +76,9 @@ int game() {
   Vector auxVector;
 
   // Initialize striker
-  striker.position.x = 65 << 14;
+  striker.position.x = 60 << 14;
   striker.position.y = 70 << 14;
-  striker.width = ((long) 0x0F) << 14;
+  striker.width = ((long) 0x10) << 14;
 
   // Not used currently.
   ball.radius = 1;
@@ -96,10 +96,10 @@ int game() {
 
   generateWalls(blockMap);
   generateDefaultMap(blockMap);
-   
-  initTimer();
-  SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
-  startTimer();
+  
+  // initTimer();
+  // SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
+  // startTimer();
 
   clrscr();
   // gotoxy(10,10);
@@ -109,7 +109,7 @@ int game() {
   renderStriker(&striker);
 
   while(1) {
-    if (moveFlag == 1) {
+    if (*moveFlag == 1) {
       // Move ball and detect collision between ball&blocks.
       moveBall(&ball);
 
@@ -132,9 +132,14 @@ int game() {
           if (blockMap[i].indestructible == 0)
           {
             blockMap[i].durability = blockMap[i].durability - 1;
+            *currentPlayerScore = *currentPlayerScore + 1;
+            gotoxy(50,0);
+            clreol();
+            gotoxy(50,0);
+            printf("SCORE: %d\n", *currentPlayerScore);
             renderBlock(blockMap[i]);
           }
-          break;
+          // break;
         }
       }
 
@@ -155,16 +160,14 @@ int game() {
       }
       keyRead = readkey();
 
-      // Check if user wants to bossstate
-
       moveStriker(&striker, keyRead);
-      moveFlag = 0;
+      *moveFlag = 0;
 
       if (keyRead == 7)
       {
         renderBossMode();
-        debounceGuard = 1;
-        while (debounceGuard != 0) {}
+        *debounceGuard = 1;
+        while (*debounceGuard != 0) {}
         keyRead = readkey();
         while (keyRead == 0) {
           keyRead = readkey();
@@ -175,14 +178,14 @@ int game() {
 
     }
 
-    if (strikerMoveFlag)
+    if (*strikerMoveFlag)
     {
 
       clearBall(&ball);
       renderBall(&ball);
       clearStriker(&striker);
       renderStriker(&striker);
-      strikerMoveFlag = 0;
+      *strikerMoveFlag = 0;
     }
   }
 }

@@ -7,7 +7,7 @@ typedef struct  {
 	char str[30];
 } MenuItem;
 
-int menu(MenuItem items[]);
+int menu(MenuItem items[], int* debounceGuard, int* ms100Tick);
 
 // struct MenuItem[] generateMenu();
 

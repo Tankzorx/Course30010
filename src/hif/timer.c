@@ -4,6 +4,7 @@ void initTimer() {
 
   DI();
   // Init Timer and interrupt settings.
+
   T0CTL = 0x19;
   // timer 0 byte registers set initial value:
   T0H = 0x0;
@@ -18,6 +19,11 @@ void initTimer() {
   // ENABLE TIMER
   //SET_VECTOR(TIMER0, interruptHandler);
 
+}
+
+void disableTimer() {
+  DI();
+  T0CTL &= 0x7F;
 }
 
 void startTimer() {

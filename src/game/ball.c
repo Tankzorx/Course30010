@@ -75,6 +75,8 @@ int ballIsDead(Ball ball, int screenHeight) {
 
 void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) {
 	// Vector test;
+	// Regular format
+	int widthHalf = ((striker->width >> 14) / 2);
 	// gotoxy(100,38);
 	// test.x = 4 << 14;
 	// printFix(test.x << 2);
@@ -100,11 +102,23 @@ void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) 
 	// Then modify based on where the ball hit.
 	if ((ballPtr->velocity.x) > 0)
 	{	
-		flipY(&(ballPtr->velocity));
-		rotate(&(ballPtr->velocity), -collisionArea);
+		if (collisionArea < widthHalf) // Ball hit left side of striker coming from left.
+		{
+			flipY(&(ballPtr->velocity));
+			rotate(&(ballPtr->velocity), collisionArea*2);
+		} else {
+			rotate(&(ballPtr->velocity), collisionArea*2);
+			flipY(&(ballPtr->velocity));
+		}
 	} else {
-		flipY(&(ballPtr->velocity));
-		rotate(&(ballPtr->velocity), collisionArea);
+		if (collisionArea > widthHalf) // ball hit right side of striker coming from right.
+		{
+			rotate(&(ballPtr->velocity), ((striker->width >> 14) - collisionArea)*2);
+			flipY(&(ballPtr->velocity));
+		} else {
+			flipY(&(ballPtr->velocity));
+			rotate(&(ballPtr->velocity), ((striker->width >> 14) - collisionArea)*2);
+		}
 	}
 	// ballPtr->
 	// gotoxy(120, 22);

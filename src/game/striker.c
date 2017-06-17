@@ -22,9 +22,19 @@ void clearStriker(Striker *striker) {
 void moveStriker(Striker *striker, char buttonInput) {
 	switch (buttonInput) {
 		case 1: // Move right
+			if (striker->position.x > (((long) 195 << 14) - striker->width))
+			{
+				striker->position.x = ((long) 195 << 14) - striker->width;
+				break;
+			}
 			striker->position.x = striker->position.x + (3 << 11);
 			break;
 		case 2: // Move left
+			if (striker->position.x < ((long) 1 << 14))
+			{
+				striker->position.x = ((long) 1 << 14);
+				break;
+			}
 			striker->position.x = striker->position.x - (3 << 11);
 			break;
 		default:

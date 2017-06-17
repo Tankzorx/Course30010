@@ -11,8 +11,8 @@ void generateWalls(Block blockMap[]) {
   Vector auxVector;
   Block b;
 
-  auxVector.x = (long)(0) << 14;
-  auxVector.y = (long)(0) << 14;
+  auxVector.x = (long)(1) << 14;
+  auxVector.y = (long)(1) << 14;
   b.position = auxVector;
   b.width = 3 << 14;
   b.height = 70 << 14;
@@ -21,7 +21,7 @@ void generateWalls(Block blockMap[]) {
   blockMap[0] = b;
 
   auxVector.x = (long)(195) << 14;
-  auxVector.y = (long)(0) << 14;
+  auxVector.y = (long)(1) << 14;
   b.position = auxVector;
   b.width = 3 << 14;
   b.height = 70 << 14;
@@ -29,8 +29,8 @@ void generateWalls(Block blockMap[]) {
   b.indestructible = 1;   
   blockMap[1] = b;
 
-  auxVector.x = (long)(0) << 14;
-  auxVector.y = (long)(0) << 14;
+  auxVector.x = (long)(1) << 14;
+  auxVector.y = (long)(2) << 14;
   b.position = auxVector;
   b.width = 195 << 14;
   b.height = 3 << 14;
@@ -48,32 +48,35 @@ void generateDefaultMap(Block blockMap[]) {
   Vector auxVector;
   Block b;
   int i,j;
-  // // Assume walls are in the blockmap.
-  // // (Shorthand version of struct creation didn't work.)
-  // // Rows
-  // for (i = 0; i < 3; i++) {
-  //   // Columns
-  //   for (j = 0; j < 10; j++) {
-  //     auxVector.x = (long)(15+j*12) << 14;
-  //     auxVector.y = (long)(5+i*10) << 14;
-  //     b.position = auxVector;
-  //     b.width = 10 << 14;
-  //     b.height = 8 << 14;
-  //     b.durability = 3;
-  //     b.indestructible = 0;
-  //     blockMap[i*10 + j + 3] = b;
-  //   }
-  // }
-  auxVector.x = (long)(50) << 14;
-  auxVector.y = (long)(20) << 14;
-  b.position = auxVector;
-  b.width = 100 << 14;
-  b.height = 3 << 14;
-  b.durability = 1;
-  b.indestructible = 0;
-  blockMap[3] = b;
+  // Assume walls are in the blockmap.
+  // (Shorthand version of struct creation didn't work.)
+  // Rows
+  for (i = 0; i < 3; i++) {
+    // Columns
+    for (j = 0; j < 10; j++) {
+      auxVector.x = (long)(15+j*12) << 14;
+      auxVector.y = (long)(5+i*10) << 14;
+      b.position = auxVector;
+      b.width = 10 << 14;
+      b.height = 8 << 14;
+      b.durability = 3;
+      b.indestructible = 0;
+      blockMap[i*10 + j + 3] = b;
+    }
+  }
+  blockMap[99].indestructible = blockMap[99].indestructible + i*j;
 
-  blockMap[99].indestructible = blockMap[99].indestructible + 1;
+  // // ONE TEST BLOCK FOR TESTING
+  // auxVector.x = (long)(50) << 14;
+  // auxVector.y = (long)(20) << 14;
+  // b.position = auxVector;
+  // b.width = 1 << 14;
+  // b.height = 1 << 14;
+  // b.durability = 1;
+  // b.indestructible = 0;
+  // blockMap[3] = b;
+
+  // blockMap[99].indestructible = blockMap[99].indestructible + 2;
 }
 
 
