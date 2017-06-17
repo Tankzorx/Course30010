@@ -6,11 +6,11 @@
 
 typedef struct
 {
-	char currentColumn;
-	char LEDOffset;
-	char LEDTextOffset;
-	char insertNewCharFlag;
-	char videoBufferReplaceOffset;
+	int currentColumn;
+	int LEDOffset;
+	int LEDTextOffset;
+	int insertNewCharFlag;
+	int videoBufferReplaceOffset;
 	char LEDText[LED_MAX_STR_LEN];
 	char video_buffer[5][6];
 } LEDData;

@@ -10,8 +10,8 @@ typedef struct
   Vector position;
   long width;
   long height;
-  char durability; // How many hits can this thing take?
-  char indestructible; // For wall blocks.
+  int durability; // How many hits can this thing take?
+  int indestructible; // For wall blocks.
 } Block;
 
 
