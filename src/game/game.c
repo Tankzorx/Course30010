@@ -74,10 +74,11 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
 
   while(1) {
 
-    // if (*LEDFlag = 1)
-    // {
-    //     // LEDUpdate();
-    // }
+    if (*LEDFlag == 1)
+    {
+      LEDUpdate(&LEDDataInstance);
+      *LEDFlag = 0;
+    }
 
     if (*moveFlag == 1) {
       // Move ball and detect collision between ball&blocks.
@@ -157,6 +158,12 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
 
     if (*strikerMoveFlag)
     {
+      // Update LED
+      LEDDataInstance.LEDOffset = LEDDataInstance.LEDOffset + 1;
+      if (LEDDataInstance.LEDOffset % 6 == 0)
+      {
+        LEDDataInstance.insertNewCharFlag = 1;
+      }
 
       clearBall(&ball);
       renderBall(&ball);
