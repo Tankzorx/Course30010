@@ -4,7 +4,7 @@
 #include "game.h"
 #include "block.h"
 #include "ball.h"
-#include "boss.h"
+#include "../api/boss.h"
 #include "../api/vector.h"
 #include "../api/sincos.h"
 #include "collision.h"
@@ -12,8 +12,6 @@
 #include "../hif/buttonInput.h"
 #include "../hif/timer.h"
 #include "striker.h"
-
-
 
 int tickCounter = 1;
 int ms10Tick = 1;
