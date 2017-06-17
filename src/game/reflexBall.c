@@ -20,9 +20,6 @@ void runReflexBall() {
   MenuItem items[2] = {{2, "Play Game" }, {3, "High Score"}};
   int state = 2; // renderMenu=1, waitForPlaySelection, playing, lost
 
-  // Init timer sets the reloadnumber etc.
-  // We want to set it up so that the timer is interrupts every millisecond.
-
   clrscr();
 
   while (1) {

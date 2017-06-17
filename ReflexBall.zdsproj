@@ -31,6 +31,8 @@
 <file filter-key="">src\api\LUT.h</file>
 <file filter-key="">src\game\striker.c</file>
 <file filter-key="">src\game\striker.h</file>
+<file filter-key="">src\game\boss.c</file>
+<file filter-key="">src\game\boss.h</file>
 </files>
 
 <!-- configuration information -->
