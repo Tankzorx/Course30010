@@ -6,6 +6,7 @@ int game(
 	int* moveFlag,
 	int* debounceGuard,
 	int* strikerMoveFlag,
-	int* currentPlayerScore);
+	int* currentPlayerScore,
+	int* LEDFlag);
 
 #endif /*! _DTU_GAME_ */

@@ -11,58 +11,16 @@
 #include "../hif/console.h"
 #include "../hif/buttonInput.h"
 #include "../hif/timer.h"
+#include "../hif/LED.h"
 #include "striker.h"
 
-// int tickCounter = 1;
-// int ms10Tick = 1;
-// int ms50Tick = 1;
-// int ms100Tick = 1;
-// int debounceGuard = 1;
-// int moveFlag = 0;
-// int strikerMoveFlag = 0;
-char readPosFlag = 0;
-// #pragma interrupt
-// void interruptHandler() {
-//   tickCounter++;
-//   ms10Tick++;
-//   ms50Tick++;
-//   ms100Tick++;
-//   debounceGuard++;
-
-//   if (ms10Tick > 10)
-//   {
-//     ms10Tick = 0;
-//     moveFlag = 1;
-//   }
-
-//   if (ms50Tick > 50)
-//   {
-//     ms50Tick = 0;
-//   }  
-
-//   if (ms100Tick > 100)
-//   {
-//     strikerMoveFlag = 1;
-//     ms100Tick = 0;
-//   }
-
-//   if (debounceGuard > 500) {
-//     debounceGuard = 0;
-//   }
-
-//   if (tickCounter > 1000)
-//   {
-//     // printf("TICKED TIMER.\n");
-//     tickCounter = 0;
-//   }
-// }
-
-
-
 // gameState som input skal nok gøres senere.
-int game(int* moveFlag, int* debounceGuard, int* strikerMoveFlag, int* currentPlayerScore) {
+int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* currentPlayerScore,  int* LEDFlag) {
   Striker striker;
-  int blocksAlive = 0;
+  Block blockMap[40];
+  LEDData LEDDataInstance;
+  char blocksAlive = 0;
+  char lives = 3;
   char keyRead;
   int i, j;
   Vector initBallVelocity;
@@ -70,7 +28,6 @@ int game(int* moveFlag, int* debounceGuard, int* strikerMoveFlag, int* currentPl
   int collisionState;
   int collisionStateStriker;
   // long collisionStateAUX;
-  Block blockMap[100];
   Ball ball;
   Block b;
   Vector auxVector;
@@ -94,9 +51,16 @@ int game(int* moveFlag, int* debounceGuard, int* strikerMoveFlag, int* currentPl
   ball.velocity = initBallVelocity;
   ball.lastRenderPosition = initBallPosition;
 
+  initLED("Cyka Blyat ", &LEDDataInstance);
+
+  // gotoxy(60,60);
+  // printf("%s", LEDDataInstance.LEDText);
+  // while(1) {}
+
   generateWalls(blockMap);
   generateDefaultMap(blockMap);
   
+  // SetLEDText("yalla");
   // initTimer();
   // SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
   // startTimer();
@@ -109,16 +73,29 @@ int game(int* moveFlag, int* debounceGuard, int* strikerMoveFlag, int* currentPl
   renderStriker(&striker);
 
   while(1) {
+
+    // if (*LEDFlag = 1)
+    // {
+    //     // LEDUpdate();
+    // }
+
     if (*moveFlag == 1) {
       // Move ball and detect collision between ball&blocks.
       moveBall(&ball);
 
       if (ballIsDead(ball, 70) == 1)
       {
-        return 1; // return menu state for now.
+        if (lives > 0)
+        {
+            ball.position = initBallPosition;
+            lives = lives - 1;
+            ball.velocity = initBallVelocity;
+        } else {
+            return 1; // return menu state for now.
+        }
       }
 
-      for (i = 0; i < blockMap[99].indestructible; i++)
+      for (i = 0; i < blockMap[39].indestructible; i++)
       {
         if (blockMap[i].durability > 0 &&
             blockMap[i].indestructible == 0)

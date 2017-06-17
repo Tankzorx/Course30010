@@ -10,6 +10,7 @@
 #include "../hif/console.h"
 
 int tickCounter = 1;
+int LEDFlag = 0;
 int ms10Tick = 1;
 int ms100Tick = 1;
 int ms50Tick = 0;
@@ -24,6 +25,7 @@ void interruptHandler() {
   ms50Tick++;
   ms100Tick++;
   debounceGuard++;
+  LEDFlag = 1;
 
   if (ms10Tick > 10)
   {
@@ -83,7 +85,7 @@ void runReflexBall() {
         state = menu(items, &debounceGuard, &ms50Tick);
         break;
       case 2:
-        state = game(&moveFlag, &debounceGuard, &strikerMoveFlag, &currentPlayerScore);
+        state = game(&moveFlag, &debounceGuard, &strikerMoveFlag, &currentPlayerScore, &LEDFlag);
         // Update the highscore list.
         for (i = 0; i < 10; i++)
         {

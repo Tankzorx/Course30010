@@ -39,7 +39,7 @@ void generateWalls(Block blockMap[]) {
   blockMap[2] = b;
 
   b.indestructible = 3;
-  blockMap[99] = b;
+  blockMap[39] = b;
 
   // return &blockMap[0];
 }
@@ -64,7 +64,7 @@ void generateDefaultMap(Block blockMap[]) {
       blockMap[i*10 + j + 3] = b;
     }
   }
-  blockMap[99].indestructible = blockMap[99].indestructible + i*j;
+  blockMap[39].indestructible = blockMap[39].indestructible + i*j;
 
   // // ONE TEST BLOCK FOR TESTING
   // auxVector.x = (long)(50) << 14;
@@ -115,7 +115,7 @@ void renderBlock(Block block) {
 
 void renderBlockMap(Block blockMap[]) {
   int i;
-  for (i = 0; i < blockMap[99].indestructible; i++)
+  for (i = 0; i < blockMap[39].indestructible; i++)
   {
     renderBlock(blockMap[i]);
   }

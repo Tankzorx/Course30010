@@ -35,6 +35,8 @@
 <file filter-key="">src\api\boss.h</file>
 <file filter-key="">src\game\highscore.c</file>
 <file filter-key="">src\game\highscore.h</file>
+<file filter-key="">src\hif\LED.c</file>
+<file filter-key="">src\hif\charset.h</file>
 </files>
 
 <!-- configuration information -->

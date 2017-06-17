@@ -65,7 +65,7 @@ int menu(MenuItem items[], int* debounceGuard, int* ms50Tick) {
   gotoxy(50,getNumItems(items)*5 + 15);
   printf("Controls:");
   gotoxy(50,getNumItems(items)*5 + 16);
-  printf("PF7: Select Next:");
+  printf("PF7: Select Next");
   gotoxy(50,getNumItems(items)*5 + 17);
   printf("PF6: Select Previous");
   gotoxy(50,getNumItems(items)*5 + 18);

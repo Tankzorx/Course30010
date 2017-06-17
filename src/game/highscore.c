@@ -9,7 +9,7 @@ void renderHighscore(int highscores[]) {
   clrscr();
   for (i = 0; i < 10; i++) {
     gotoxy(10,10 + i*5);
-    printf("Player %d:  %d", i, highscores[i]);
+    printf("%d. %d", (i + 1), highscores[i]);
   }
 
   gotoxy(50, 65);
