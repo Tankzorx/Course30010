@@ -1,123 +1,130 @@
-#include <eZ8.h>
 #include <sio.h>
+#include <stdlib.h>
 
-#include "menu.h"
-#include "boss.h"
-#include "../hif/timer.h"
-#include "../hif/buttonInput.h"
 #include "../hif/console.h"
+#include "../hif/buttonInput.h"
 
-int getNumItems(MenuItem items[]) {
-  return sizeof(items); // THIS ANNOYS ME. This returns the correct answer??? DNO.
+#include "Debounce.h"
+#include "String.h"
+#include "boss.h"
+#include "menu.h"
+
+
+void clearMenu(Menu* menu) {
+  MenuItem* menuItem = menu->items->data;
+
+  gotoxy(menu->mx, menu->my);
+  printN(length(menuItem->name), ' ');
 }
 
-void render(MenuItem items[], int selectedIndex) {
-  int i;
-  for (i = 0; i < getNumItems(items); i++) {
-    gotoxy(10, 10 + i*5);
-    clreol();
-    if (i == selectedIndex) {
-      blink(1);
-    }
-  printf("%s", items[i].str);
-  blink(0);
-  }
 
-  
+void renderMenu(Menu* menu) {
+  MenuItem* menuItem = menu->items->data;
+
+  gotoxy(menu->mx, menu->my);
+  printf("%s", menuItem->name);
 }
 
-void selectNext(MenuItem items[], int* selectedMenuItem, int numItems) {
-  if (*selectedMenuItem >= numItems - 1) // If we're already on the last option,
-  {                                      // We wrap around and select 0th option.
-    *selectedMenuItem = 0;
-    render(items, 0);
-  } else {
-    *selectedMenuItem = *selectedMenuItem + 1;
-    render(items, *selectedMenuItem);
-  }
-  // gotoxy(35,35);
-  // printf("selectNext. selectedMenuItem %d", *selectedMenuItem);
+
+void renderControls(Menu* menu) {
+  MenuItem* menuItem = menu->items->data;
+
+  gotoxy(menu->mx + menu->cx, menu->my + menu->cy);
+  printf("PF7: Next - PF6: Previous - PD3: Select");
 }
 
-void selectPrev(MenuItem items[], int* selectedMenuItem, int numItems) {
-  if (*selectedMenuItem <= 0) // If we're already on the last option,
-  {                          // We wrap around and select 0th option.
-    render(items, numItems - 1);
-    *selectedMenuItem = numItems - 1;
-  } else {
-    *selectedMenuItem = *selectedMenuItem - 1;
-    render(items, *selectedMenuItem);
-  }
-  // gotoxy(35,45);
-  // printf("selectPrev. selectedMenuItem %d", *selectedMenuItem);
+
+void next(Menu* menu) {
+  menu->items = menu->items->next;
 }
-int menu(MenuItem items[], int* debounceGuard, int* ms50Tick) {
-  int keyRead = 0;
-  int selectedMenuItem = 0;
-  // int spamSafety = 0;
-  int numItems = getNumItems(items);
 
 
-  // Initial rendering. 
-  clrscr();
-  render(items, selectedMenuItem);
+void prev(Menu* menu) {
+  menu->items = menu->items->prev;
+}
 
-  gotoxy(50,getNumItems(items)*5 + 15);
-  printf("Controls:");
-  gotoxy(50,getNumItems(items)*5 + 16);
-  printf("PF7: Select Next");
-  gotoxy(50,getNumItems(items)*5 + 17);
-  printf("PF6: Select Previous");
-  gotoxy(50,getNumItems(items)*5 + 18);
-  printf("PD3: Choose Current Selection");
-  // gotoxy(25,25);
-  // printf("Num items: %d\n", numItems);
 
-  // cuurrentreadkey
-  // while(cuurrentreadkey ){
-  // MAGNUS: SLEEP STATE.
-  // }
-  
-  // Wait 'debounceGuard' milliseconds before activating controls
-  *debounceGuard = 1;
-  while(*debounceGuard != 0) {}
+int state(Menu* menu) {
+  MenuItem* menuItem = menu->items->data;
+  return menuItem->state;
+}
+
+
+int listen(Menu* menu, int* tick){
+
+  char previousKey, currentKey;
+  sleep(tick, 800);
 
   while (1) {
-    switch (readkey()) {
-      case 1: // PF7 clicked. // Assume this is "select next"
-        *ms50Tick = 1;
-        while (*ms50Tick != 0) {}
-        if (readkey() == 1) {
-          selectNext(items, &selectedMenuItem, numItems);
-          *debounceGuard = 1;
-          while(*debounceGuard != 0) {}
-        } 
-        break;
-      case 2: // PF6 clicked // Assume this is "select previous"
-        // gotoxy(25,25);
-        // printf("lastClicked: %d\n", lastClicked);
-        // return;
-        *ms50Tick = 1;
-        while (*ms50Tick != 0) {}
-        if (readkey() == 2) {
-          selectPrev(items, &selectedMenuItem, numItems);
-          *debounceGuard = 1;
-          while(*debounceGuard != 0) {}
-        } 
-        break;
-      case 4: // PD3 clicked // Assume this is 'select this option'
-        return items[selectedMenuItem].stateNum;
-        break;
-      case 6: // PF6+PD3 clicked // Dunno what should happen here.
-        break;
-      case 7: // PF6+PD3+PF7 clicked // BOSS KEY ;)
-        renderBossMode();
-        *debounceGuard = 1;
-        while(*debounceGuard != 0) {}
-        while(readkey() == 0) {}
-        render(items, selectedMenuItem);
-        break;
+    currentKey = readkey();
 
+    sleep(tick, 30);
+
+    if(currentKey != readkey()){
+      continue;
+    }
+
+    if(previousKey == currentKey){
+      continue;
+    }
+
+    previousKey = currentKey;
+
+    switch (currentKey) {
+      case 1:
+        clearMenu(menu);
+        next(menu);
+        renderMenu(menu);
+        break;
+      case 2:
+        clearMenu(menu);
+        prev(menu);
+        renderMenu(menu);
+        break;
+      case 3:
+        renderBossMode();
+        sleep(tick, 300);
+        spin();
+        renderControls(menu);
+        break;
+      case 4:
+        return state(menu);
+        break;
     }
   }
+}
+
+
+Menu* fromNode(Node* items) {
+  Menu* menu;
+  menu = malloc(sizeof(*menu));
+
+  menu->items = items;
+
+  return menu;
+}
+
+
+int defaultMenu(int* tick) {
+  Menu* menu;
+
+  MenuItem play = { 2, "Play Game" };
+  MenuItem highScore = { 3, "High Score" };
+  MenuItem exit = { 4, "Exit - Not implemented" };
+
+  Node* items = singleton(&play);
+  insert(items, &highScore);
+  insert(items, &exit);
+
+  menu = fromNode(items);
+  menu->mx = 10;
+  menu->my = 10;
+  menu->cx = 0;
+  menu->cy = 5;
+
+  renderControls(menu);
+  renderMenu(menu);
+
+  //why i dont need return?
+  listen(menu, tick);
 }

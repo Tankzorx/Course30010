@@ -64,7 +64,6 @@ void interruptHandler() {
 
 void runReflexBall() {
   int i, j;
-  MenuItem items[2] = {{2, "Play Game" }, {3, "High Score"}};
   int currentPlayerScore = 0;
   int highscores[10];
   int state = 1; // renderMenu=1, waitForPlaySelection, playing, lost
@@ -82,7 +81,7 @@ void runReflexBall() {
   while (1) {
     switch (state) {
       case 1: // render menu state
-        state = menu(items, &debounceGuard, &ms50Tick);
+        state = defaultMenu(&tickCounter);
         break;
       case 2:
         state = game(&moveFlag, &debounceGuard, &strikerMoveFlag, &currentPlayerScore, &LEDFlag);

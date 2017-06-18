@@ -37,6 +37,12 @@
 <file filter-key="">src\game\highscore.h</file>
 <file filter-key="">src\hif\LED.c</file>
 <file filter-key="">src\hif\charset.h</file>
+<file filter-key="">src\api\CircularDoublyLinkedList.c</file>
+<file filter-key="">src\api\CircularDoublyLinkedList.h</file>
+<file filter-key="">src\api\String.c</file>
+<file filter-key="">src\api\String.h</file>
+<file filter-key="">src\api\Debounce.c</file>
+<file filter-key="">src\api\Debounce.h</file>
 </files>
 
 <!-- configuration information -->
@@ -150,7 +156,6 @@
 </tool>
 <tool name="Linker">
 <options>
-<option name="startup" type="string" change-action="build"></option>
 <option name="code" type="string" change-action="build">0-FFFF</option>
 <option name="createnew" type="integer" change-action="build">0</option>
 <option name="customlnkflag" type="integer" change-action="build">0</option>
@@ -168,6 +173,7 @@
 <option name="quiet" type="boolean" change-action="none">TRUE</option>
 <option name="rdata" type="string" change-action="build">20-FF</option>
 <option name="relist" type="boolean" change-action="build">false</option>
+<option name="startup" type="string" change-action="build"></option>
 <option name="startuptype" type="integer" change-action="build">1</option>
 <option name="usecrun" type="boolean" change-action="build">true</option>
 <option name="warn" type="boolean" change-action="none">TRUE</option>
@@ -293,7 +299,6 @@
 </tool>
 <tool name="Linker">
 <options>
-<option name="startup" type="string" change-action="build">.</option>
 <option name="code" type="string" change-action="build">0-FFFF</option>
 <option name="createnew" type="integer" change-action="build">0</option>
 <option name="customlnkflag" type="integer" change-action="build">0</option>
@@ -311,6 +316,7 @@
 <option name="quiet" type="boolean" change-action="none">TRUE</option>
 <option name="rdata" type="string" change-action="build">20-FF</option>
 <option name="relist" type="boolean" change-action="build">false</option>
+<option name="startup" type="string" change-action="build">.</option>
 <option name="startuptype" type="integer" change-action="build">1</option>
 <option name="usecrun" type="boolean" change-action="build">true</option>
 <option name="warn" type="boolean" change-action="none">true</option>

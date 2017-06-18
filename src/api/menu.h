@@ -1,14 +1,24 @@
 #ifndef _DTU_MENU_
 #define _DTU_MENU_
 
+#include "CircularDoublyLinkedList.h"
 
-typedef struct  {
-	int stateNum;
-	char str[30];
+
+typedef struct {
+	int state;
+	char name[30];
 } MenuItem;
 
-int menu(MenuItem items[], int* debounceGuard, int* ms100Tick);
 
-// struct MenuItem[] generateMenu();
+typedef struct {
+  int mx;
+  int my;
+  int cx;
+  int cy;
+  Node* items;
+} Menu;
+
+
+int defaultMenu(int* tick);
 
 #endif /*! _DTU_MENU_ */
