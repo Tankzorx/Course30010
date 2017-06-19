@@ -26,7 +26,7 @@ Highscore* initializeDefaultHighscore() {
 }
 
 
-Highscore* insertHighscore(Highscore* highscore, int score) {
+void insertHighscore(Highscore* highscore, int score) {
   Node* items;
 
   HighscoreItem highscoreItem;
@@ -34,7 +34,7 @@ Highscore* insertHighscore(Highscore* highscore, int score) {
 
   items = highscore->items;
 
-  gotoxy(12,12);
+  gotoxy(60,60);
   printf("FATTTTTTTTTTfafaafafa");
 
   if( items == NULL) {
@@ -46,8 +46,6 @@ Highscore* insertHighscore(Highscore* highscore, int score) {
   }
 
   highscore->items = items;
-
-  return highscore;
 }
 
 

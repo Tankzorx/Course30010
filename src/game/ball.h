@@ -10,7 +10,6 @@ typedef struct
   Vector position;
   Vector velocity;
   Vector lastRenderPosition;
-  int radius;
 } Ball;
 
 void moveBall(Ball* ball);

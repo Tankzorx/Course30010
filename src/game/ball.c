@@ -5,30 +5,6 @@
 #include "../hif/console.h"
 #include "../api/sincos.h"
 
-// void moveBallRightN(Ball*  ball, int n) {
-// 	clearBall(ball);
-// 	ball->xPos = ball->xPos + n;
-// 	renderBall(ball);
-// }
-
-// void moveBallLeftN(Ball*  ball, int n) {
-// 	clearBall(ball);
-// 	ball->xPos = ball->xPos - n;
-// 	renderBall(ball);
-// }
-
-// void moveBallUpN(Ball*  ball, int n) {
-// 	clearBall(ball);
-// 	ball->yPos = ball->yPos - n;
-// 	renderBall(ball);
-// }
-
-// void moveBallDownN(Ball*  ball, int n) {
-// 	clearBall(ball);
-// 	ball->yPos = ball->yPos + n;
-// 	renderBall(ball);
-// }
-
 void moveBall(Ball* ball) {
 	ball->position.x = ball->position.x + (ball->velocity.x >> 4);
 	ball->position.y = ball->position.y - (ball->velocity.y >> 4);
@@ -74,32 +50,9 @@ int ballIsDead(Ball ball, int screenHeight) {
 }
 
 void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) {
-	// Vector test;
-	// Regular format
+
 	int widthHalf = ((striker->width >> 14) / 2);
-	// gotoxy(100,38);
-	// test.x = 4 << 14;
-	// printFix(test.x << 2);
 
-
-	// test.y = 5 << 14;
-	// gotoxy(100,39);
-	// printFix(test.y << 2);
-	// rotate(&test, 256);
-	// gotoxy(100,40);
-	// printFix(test.x << 2);
-	// gotoxy(100,41);
-	// printFix(test.y << 2);
-
-	// gotoxy(120, 20);
-	// printFix(ballPtr->velocity.x << 2);
-	// gotoxy(120, 21);
-	// printFix(ballPtr->velocity.y << 2);
-	// return;
-
-	// gotoxy(100,41);
-	// printf("%ld", ballPtr->velocity.y);
-	// Then modify based on where the ball hit.
 	if ((ballPtr->velocity.x) > 0)
 	{	
 		if (collisionArea < widthHalf) // Ball hit left side of striker coming from left.
@@ -120,14 +73,6 @@ void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) 
 			rotate(&(ballPtr->velocity), ((striker->width >> 14) - collisionArea)*2);
 		}
 	}
-	// ballPtr->
-	// gotoxy(120, 22);
-	// printFix(ballPtr->velocity.x << 2);
-	// gotoxy(120, 23);
-	// printFix(ballPtr->velocity.y << 2);
-	// ballPtr->velocity.x = ballPtr->velocity.x >> 1;
-	// ballPtr->velocity.y = ballPtr->velocity.y >> 1;
-	// printf("Ball after collisionArea modification: (%d, %d)\n", ballPtr->velocity.x >> 14, ballPtr->velocity.y >> 14);
 }
 
 void moveUpEpsilonBall(Ball* ball) {

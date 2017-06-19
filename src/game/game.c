@@ -1,5 +1,5 @@
 #include <eZ8.h>
-#include <sio.h>             // special encore serial i/o routines
+#include <sio.h>
 
 #include "game.h"
 #include "block.h"
@@ -11,14 +11,14 @@
 #include "../hif/console.h"
 #include "../hif/buttonInput.h"
 #include "../hif/timer.h"
-#include "../hif/LED.h"
+// #include "../hif/LED.h"
 #include "striker.h"
 
 // gameState som input skal nok gøres senere.
 int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* currentPlayerScore,  int* LEDFlag) {
   Striker striker;
   Block blockMap[40];
-  LEDData LEDDataInstance;
+  // LEDData LEDDataInstance;
   char blocksAlive = 0;
   char lives = 3;
   char keyRead;
@@ -27,43 +27,37 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
   Vector initBallPosition;
   int collisionState;
   int collisionStateStriker;
-  // long collisionStateAUX;
   Ball ball;
+  Ball ball2;
   Block b;
   Vector auxVector;
 
   // Initialize striker
   striker.position.x = 60 << 14;
-  striker.position.y = 40 << 14;
+  striker.position.y = 70 << 14;
   striker.width = ((long) 0x10) << 14;
 
-  // Not used currently.
-  ball.radius = 1;
   // 18.14 format
   initBallPosition.x = 70 << 14;
   initBallPosition.y = 60 << 14;
   initBallVelocity.x = 0 << 14;
   initBallVelocity.y = 3 << 14;
-  //initBallVelocity.y = 2<<14;
-  // initBallVelocity.y = (~initBallVelocity.y)+1;
 
   ball.position = initBallPosition;
   ball.velocity = initBallVelocity;
   ball.lastRenderPosition = initBallPosition;
 
-  initLED("Cyka Blyat ", &LEDDataInstance);
+  initBallPosition.x = 50 << 14;
+  initBallPosition.y = 50 << 14;
+  initBallVelocity.x = 1 << 14;
+  initBallVelocity.y = 3 << 14;
 
-  // gotoxy(60,60);
-  // printf("%s", LEDDataInstance.LEDText);
-  // while(1) {}
+  ball2.position = initBallPosition;
+  ball2.velocity = initBallVelocity;
+  ball2.lastRenderPosition = initBallPosition;
 
   generateWalls(blockMap);
   generateDefaultMap(blockMap);
-  
-  // SetLEDText("yalla");
-  // initTimer();
-  // SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
-  // startTimer();
 
   clrscr();
   // gotoxy(10,10);
@@ -74,23 +68,35 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
 
   while(1) {
 
-    if (*LEDFlag == 1)
-    {
-      LEDUpdate(&LEDDataInstance);
-      *LEDFlag = 0;
-    }
+    // if (*LEDFlag == 1)
+    // {
+    //   LEDUpdate(&LEDDataInstance);
+    //   *LEDFlag = 0;
+    // }
 
     if (*moveFlag == 1) {
       // Move ball and detect collision between ball&blocks.
       moveBall(&ball);
+      moveBall(&ball2);
 
-      if (ballIsDead(ball, 70) == 1)
+      if (ballIsDead(ball, 70) == 1 || ballIsDead(ball2, 70) == 1)
       {
         if (lives > 0)
         {
+            initBallPosition.x = 70 << 14;
+            initBallPosition.y = 60 << 14;
+            initBallVelocity.x = 0 << 14;
+            initBallVelocity.y = 3 << 14;
             ball.position = initBallPosition;
-            lives = lives - 1;
             ball.velocity = initBallVelocity;
+
+            initBallPosition.x = 50 << 14;
+            initBallPosition.y = 65 << 14;
+            initBallVelocity.x = 1 << 14;
+            initBallVelocity.y = 3 << 14;
+            ball2.position = initBallPosition;
+            ball2.velocity = initBallVelocity;
+            lives = lives - 1;
         } else {
             return 1; // return menu state for now.
         }
@@ -105,6 +111,22 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
         }
         collisionState = detectCollisionBallBlock(blockMap[i], ball);
         handleBlockCollision(&ball, collisionState);
+        if (collisionState > 0)
+        {
+          if (blockMap[i].indestructible == 0)
+          {
+            blockMap[i].durability = blockMap[i].durability - 1;
+            *currentPlayerScore = *currentPlayerScore + 1;
+            gotoxy(50,0);
+            clreol();
+            gotoxy(50,0);
+            printf("SCORE: %d\n", *currentPlayerScore);
+            renderBlock(blockMap[i]);
+          }
+          // break;
+        }
+        collisionState = detectCollisionBallBlock(blockMap[i], ball2);
+        handleBlockCollision(&ball2, collisionState);
         if (collisionState > 0)
         {
           if (blockMap[i].indestructible == 0)
@@ -136,6 +158,12 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
         handleStrikerCollision(&ball, &striker, collisionStateStriker);
         moveUpEpsilonBall(&ball);
       }
+      collisionStateStriker = detectCollisionBallStriker(striker, ball2);
+      if (collisionStateStriker > -1)
+      {
+        handleStrikerCollision(&ball2, &striker, collisionStateStriker);
+        moveUpEpsilonBall(&ball2);
+      }
       keyRead = readkey();
 
       moveStriker(&striker, keyRead);
@@ -159,14 +187,16 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
     if (*strikerMoveFlag)
     {
       // Update LED
-      LEDDataInstance.LEDOffset = LEDDataInstance.LEDOffset + 1;
-      if (LEDDataInstance.LEDOffset % 6 == 0)
-      {
-        LEDDataInstance.insertNewCharFlag = 1;
-      }
+      // LEDDataInstance.LEDOffset = LEDDataInstance.LEDOffset + 1;
+      // if (LEDDataInstance.LEDOffset % 6 == 0)
+      // {
+      //   LEDDataInstance.insertNewCharFlag = 1;
+      // }
 
       clearBall(&ball);
+      clearBall(&ball2);
       renderBall(&ball);
+      renderBall(&ball2);
       clearStriker(&striker);
       renderStriker(&striker);
       *strikerMoveFlag = 0;

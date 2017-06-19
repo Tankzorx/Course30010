@@ -72,7 +72,7 @@ void runReflexBall() {
   int state = 1;
 
 
-  //Highscore* highscore;
+  Highscore* highscore;
 
   /*
   HighscoreItem highscoreItem = { 21 };
@@ -108,9 +108,9 @@ void runReflexBall() {
   highscore->items = NULL;
 */
   //should change:
-  //highscore = initializeDefaultHighscore();
+  highscore = initializeDefaultHighscore();
 
-  ///highscore = insertHighscore(highscore, 233);
+  insertHighscore(highscore, 233);
   //highscore = insertHighscore(highscore, 199);
   //insertHighscore(highscore, 3431);
 
@@ -136,7 +136,7 @@ void runReflexBall() {
         currentPlayerScore = 0;
         break;
       case 3:
-        //state = highscorex(highscore, &tick);
+        state = highscorex(highscore, &tick);
         break;
       default:
         break;

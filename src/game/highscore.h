@@ -22,7 +22,7 @@ int highscorex(Highscore* highscore, int* tick);
 
 Highscore* initializeDefaultHighscore();
 
-Highscore* insertHighscore(Highscore* highscore, int score);
+void insertHighscore(Highscore* highscore, int score);
 
 
 #endif /*! _DTU_HIGHSCORE_ */
