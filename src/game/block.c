@@ -54,11 +54,11 @@ void generateDefaultMap(Block blockMap[]) {
   for (i = 0; i < 3; i++) {
     // Columns
     for (j = 0; j < 10; j++) {
-      auxVector.x = (long)(15+j*12) << 14;
-      auxVector.y = (long)(5+i*10) << 14;
+      auxVector.x = (long)(25+j*15) << 14;
+      auxVector.y = (long)(8+i*10) << 14;
       b.position = auxVector;
       b.width = 10 << 14;
-      b.height = 8 << 14;
+      b.height = 5 << 14;
       b.durability = 3;
       b.indestructible = 0;
       blockMap[i*10 + j + 3] = b;

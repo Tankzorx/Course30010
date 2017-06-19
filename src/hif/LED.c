@@ -19,25 +19,25 @@ int strleng(char text[]) {
 	return i;
 }
 
-void initLED(char LEDText[LED_MAX_STR_LEN], LEDData* data) {
+void initLED(LEDData* data) {
 	int i;
-	int LEDTextLen = strleng(LEDText);
+	// int LEDTextLen = strleng(LEDText);
 	PEDD = 0; // ALL BITS TO OUTPUT. (Data direction)
 	PGDD = 0;
-	data->insertNewCharFlag = 0;
+	// data->insertNewCharFlag = 0;
 	data->currentColumn = 0;
-	data->LEDOffset = 0;
-	data->LEDTextOffset = 0;
-	data->videoBufferReplaceOffset = 0;
+	// data->LEDOffset = 0;
+	// data->LEDTextOffset = 0;
+	// data->videoBufferReplaceOffset = 0;
 	
-	for (i = 0; i < LEDTextLen; i++)
-	{
-		data->LEDText[i] = LEDText[i];
-	}
+	// for (i = 0; i < LEDTextLen; i++)
+	// {
+	// 	data->LEDText[i] = LEDText[i];
+	// }
 
 	for (i = 0; i < 5; i++)
 	{
-		LEDSetStringByIndex(data->LEDText[i],i, data);
+		LEDSetStringByIndex('0',i, data);
 	}
 }
 
@@ -45,37 +45,19 @@ void LEDUpdate(LEDData* data) {
     char columnArray[5] = { 0x1E, 0x1D, 0x1B, 0x17, 0x0F };
 	PEOUT = columnArray[data->currentColumn];
 
-	if (data->insertNewCharFlag == 1)
-	{
-
-		if (data->LEDTextOffset == strleng(data->LEDText))
-		{
-			data->LEDTextOffset = 0;
-		}
-		LEDSetStringByIndex(data->LEDText[data->LEDTextOffset], data->videoBufferReplaceOffset, data);
-		if (data->videoBufferReplaceOffset == 4)
-		{
-			data->videoBufferReplaceOffset = -1;
-		}
-		data->insertNewCharFlag = 0;
-		data->videoBufferReplaceOffset = data->videoBufferReplaceOffset + 1;
-		data->LEDTextOffset = data->LEDTextOffset + 1;
-	}
-
-
-	PGOUT = *(&(data->video_buffer[0][0]) + ((data->LEDOffset + (5 - data->currentColumn)) % (30))); 
+	PGOUT = *(&(data->video_buffer[0][0]) + (5 - data->currentColumn)); 
 	PEOUT &= 0x1F;
 	PEOUT |= 0x80; // Send clock signal.
 
-	PGOUT = *(&(data->video_buffer[0][0]) + ((data->LEDOffset + 6 + (5 - data->currentColumn)) % (30))); 
+	PGOUT = *(&(data->video_buffer[1][0]) + (5 - data->currentColumn)); 
 	PGOUT &= 0x7F;
 	PGOUT |= 0x80; // Send clock signal.
 
-	PGOUT = *(&(data->video_buffer[0][0]) + ((data->LEDOffset + 12 + (5 - data->currentColumn)) % (30))); 
+	PGOUT = *(&(data->video_buffer[2][0]) + (5 - data->currentColumn)); 
 	PEOUT &= 0x1F;
 	PEOUT |= 0x20; // Send clock signal.
 
-	PGOUT = *(&(data->video_buffer[0][0]) + ((data->LEDOffset + 18 + (5 - data->currentColumn)) % (30))); 
+	PGOUT = *(&(data->video_buffer[3][0]) + (5 - data->currentColumn)); 
 	PEOUT &= 0x1F;
 	PEOUT |= 0x40; // Send clock signal.
 

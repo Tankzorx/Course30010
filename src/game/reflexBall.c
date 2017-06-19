@@ -19,7 +19,7 @@ int tick = 0;
 int LEDFlag = 0;
 int ms10Tick = 1;
 int ms100Tick = 1;
-int ms50Tick = 0;
+int ms200Tick = 0;
 int debounceGuard = 1;
 int moveFlag = 0;
 int strikerMoveFlag = 0;
@@ -28,26 +28,26 @@ int strikerMoveFlag = 0;
 void interruptHandler() {
   tick++;
   ms10Tick++;
-  ms50Tick++;
+  ms200Tick++;
   ms100Tick++;
   debounceGuard++;
   LEDFlag = 1;
 
-  if (ms10Tick > 10)
+  if (ms10Tick > 40)
   {
     ms10Tick = 0;
     moveFlag = 1;
   }
 
-  if (ms100Tick > 100)
+  if (ms100Tick > 130)
   {
-    strikerMoveFlag = 1;
     ms100Tick = 0;
+    strikerMoveFlag = 1;
   }
 
-  if (ms50Tick > 50)
+  if (ms200Tick > 200)
   {
-    ms50Tick = 0;
+    ms200Tick = 0;
   }
 
   if (debounceGuard > 300) {

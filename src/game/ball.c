@@ -6,8 +6,8 @@
 #include "../api/sincos.h"
 
 void moveBall(Ball* ball) {
-	ball->position.x = ball->position.x + (ball->velocity.x >> 4);
-	ball->position.y = ball->position.y - (ball->velocity.y >> 4);
+	ball->position.x = ball->position.x + ball->velocity.x;
+	ball->position.y = ball->position.y - ball->velocity.y;
 }
 
 void clearBall(Ball* ball) {
@@ -42,7 +42,7 @@ void handleBlockCollision(Ball* ballPtr, int collisionState) {
 }
 
 int ballIsDead(Ball ball, int screenHeight) {
-	if ((ball.position.y >> 14) > screenHeight)
+	if ((ball.position.y >> 14) > screenHeight + 2)
 	{
 		return 1;
 	}

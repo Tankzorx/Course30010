@@ -27,7 +27,7 @@ void moveStriker(Striker *striker, char buttonInput) {
 				striker->position.x = ((long) 195 << 14) - striker->width;
 				break;
 			}
-			striker->position.x = striker->position.x + (3 << 11);
+			striker->position.x = striker->position.x + (7 << 11);
 			break;
 		case 2: // Move left
 			if (striker->position.x < ((long) 5 << 14))
@@ -35,7 +35,7 @@ void moveStriker(Striker *striker, char buttonInput) {
 				striker->position.x = ((long) 5 << 14);
 				break;
 			}
-			striker->position.x = striker->position.x - (3 << 11);
+			striker->position.x = striker->position.x - (7 << 11);
 			break;
 		default:
 			break;

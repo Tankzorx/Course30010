@@ -19,7 +19,7 @@
  * 4: Hit top side
  */
 int detectCollisionBallBlock(Block block, Ball ball) {
-	long epsilon = (long) 1 << 13; // We need some variable to define a
+	long epsilon = (long) 1 << 14; // We need some variable to define a
 
 	if (block.durability == 0)
 	{
@@ -88,7 +88,7 @@ int detectCollisionBallBlock(Block block, Ball ball) {
 int detectCollisionBallStriker(Striker striker,Ball ball) {
 	int i;
 	long j;
-    long epsilon = (long) 1 << 13;
+    long epsilon = (long) 1 << 14;
 
     // Ball too high up
     if (ball.position.y < (striker.position.y - epsilon)){
