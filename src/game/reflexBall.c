@@ -1,6 +1,12 @@
 #include <eZ8.h>
 #include <sio.h>
 
+#include <stdlib.h>
+
+#include "../api/CircularDoublyLinkedList.h"
+#include "../game/highscore.h"
+
+
 #include "reflexBall.h"
 #include "block.h"
 #include "game.h"
@@ -9,7 +15,7 @@
 #include "../hif/timer.h"
 #include "../hif/console.h"
 
-int tickCounter = 1;
+int tick = 0;
 int LEDFlag = 0;
 int ms10Tick = 1;
 int ms100Tick = 1;
@@ -20,7 +26,7 @@ int strikerMoveFlag = 0;
 
 #pragma interrupt
 void interruptHandler() {
-  tickCounter++;
+  tick++;
   ms10Tick++;
   ms50Tick++;
   ms100Tick++;
@@ -48,9 +54,9 @@ void interruptHandler() {
     debounceGuard = 0;
   }
 
-  if (tickCounter > 1000)
+  if (tick > 1000)
   {
-    tickCounter = 0;
+    tick = 0;
   }
 }
 
@@ -63,48 +69,77 @@ void interruptHandler() {
  */
 
 void runReflexBall() {
+  int state = 1;
+
+
+  //Highscore* highscore;
+
+  /*
+  HighscoreItem highscoreItem = { 21 };
+  HighscoreItem highscoreItem1 = { 23 };
+  HighscoreItem highscoreItem2 = { 999 };
+  HighscoreItem highscoreItem3 = { 212 };
+
+  Node* items;
+*/
+
   int i, j;
   int currentPlayerScore = 0;
-  int highscores[10];
-  int state = 1; // renderMenu=1, waitForPlaySelection, playing, lost
+
 
   initTimer();
   SET_VECTOR(TIMER0, interruptHandler); // Can't avoid this call sadly.
   startTimer();
   clrscr();
 
-  for (i = 0; i < 10; i++)
-  {
-    highscores[i] = 0;
-  }
+
+/*
+  items = singleton(&highscoreItem);
+  items = insert(items, &highscoreItem1);
+  items = insert(items, &highscoreItem2);
+  items = insert(items, &highscoreItem3);
+
+  highscore = malloc(sizeof(*highscore));
+
+  highscore->mx = 10;
+  highscore->my = 10;
+  highscore->cx = 0;
+  highscore->cy = 5;
+  highscore->items = NULL;
+*/
+  //should change:
+  //highscore = initializeDefaultHighscore();
+
+  ///highscore = insertHighscore(highscore, 233);
+  //highscore = insertHighscore(highscore, 199);
+  //insertHighscore(highscore, 3431);
+
+  //printf("%d", highscore.my);
+  //highscoreItem = (highscore.items)->data;
+
+  //gotoxy(highscore.mx, highscore.my);
+  //printf("lol: %s", highscoreItem->name);
+
 
   while (1) {
     switch (state) {
       case 1: // render menu state
-        state = defaultMenu(&tickCounter);
+        state = defaultMenu(&tick);
         break;
       case 2:
         state = game(&moveFlag, &debounceGuard, &strikerMoveFlag, &currentPlayerScore, &LEDFlag);
         // Update the highscore list.
-        for (i = 0; i < 10; i++)
-        {
-          if (currentPlayerScore > highscores[i])
-          {
-            for (j = 9; j > i; j--)
-            {
-              highscores[j] = highscores[j-1];
-            }
-            highscores[i] = currentPlayerScore;
-            break;
-          }
-        }        
+        // Update the highscore list.
+        // Update the highscore list.
+        // Update the highscore list.
+//        insertHighscore(highscore, currentPlayerScore);
         currentPlayerScore = 0;
         break;
       case 3:
-        state = highscore(highscores, &debounceGuard, &ms50Tick);
+        //state = highscorex(highscore, &tick);
         break;
       default:
         break;
-    };
+    }
   }
 }

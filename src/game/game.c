@@ -34,7 +34,7 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
 
   // Initialize striker
   striker.position.x = 60 << 14;
-  striker.position.y = 70 << 14;
+  striker.position.y = 40 << 14;
   striker.width = ((long) 0x10) << 14;
 
   // Not used currently.

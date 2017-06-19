@@ -13,7 +13,11 @@ typedef struct lnode Node;
 
 Node* singleton(void* data);
 
-void insert(Node* tail, void* data);
+Node* insert(Node* tail, void* data);
+
+Node* next(Node* tail);
+
+Node* prev(Node* tail);
 
 
 #endif /*! _DTU_CIRCULARDOUBLYLINKEDLIST_ */

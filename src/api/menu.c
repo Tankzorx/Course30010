@@ -26,7 +26,7 @@ void renderMenu(Menu* menu) {
 }
 
 
-void renderControls(Menu* menu) {
+void renderMenuControls(Menu* menu) {
   MenuItem* menuItem = menu->items->data;
 
   gotoxy(menu->mx + menu->cx, menu->my + menu->cy);
@@ -34,13 +34,13 @@ void renderControls(Menu* menu) {
 }
 
 
-void next(Menu* menu) {
-  menu->items = menu->items->next;
+void nextMenu(Menu* menu) {
+  menu->items = next(menu->items);
 }
 
 
-void prev(Menu* menu) {
-  menu->items = menu->items->prev;
+void prevMenu(Menu* menu) {
+  menu->items = prev(menu->items);
 }
 
 
@@ -50,7 +50,7 @@ int state(Menu* menu) {
 }
 
 
-int listen(Menu* menu, int* tick){
+int listenMenu(Menu* menu, int* tick){
 
   char previousKey, currentKey;
   sleep(tick, 800);
@@ -73,21 +73,23 @@ int listen(Menu* menu, int* tick){
     switch (currentKey) {
       case 1:
         clearMenu(menu);
-        next(menu);
+        nextMenu(menu);
         renderMenu(menu);
         break;
       case 2:
         clearMenu(menu);
-        prev(menu);
+        prevMenu(menu);
         renderMenu(menu);
         break;
       case 3:
         renderBossMode();
         sleep(tick, 300);
         spin();
-        renderControls(menu);
+        renderMenuControls(menu);
+        renderMenu(menu);
         break;
       case 4:
+        free(menu);
         return state(menu);
         break;
     }
@@ -95,7 +97,17 @@ int listen(Menu* menu, int* tick){
 }
 
 
-Menu* fromNode(Node* items) {
+int menux(Menu* menu, int* tick) {
+  clrscr();
+
+  renderMenuControls(menu);
+  renderMenu(menu);
+
+  listenMenu(menu, tick);
+}
+
+
+Menu* menuFromNode(Node* items) {
   Menu* menu;
   menu = malloc(sizeof(*menu));
 
@@ -110,21 +122,17 @@ int defaultMenu(int* tick) {
 
   MenuItem play = { 2, "Play Game" };
   MenuItem highScore = { 3, "High Score" };
-  MenuItem exit = { 4, "Exit - Not implemented" };
 
-  Node* items = singleton(&play);
-  insert(items, &highScore);
-  insert(items, &exit);
+  Node* items;
 
-  menu = fromNode(items);
+  items = singleton(&play);
+  items = insert(items, &highScore);
+
+  menu = menuFromNode(items);
   menu->mx = 10;
   menu->my = 10;
   menu->cx = 0;
   menu->cy = 5;
 
-  renderControls(menu);
-  renderMenu(menu);
-
-  //why i dont need return?
-  listen(menu, tick);
+  return menux(menu, tick);
 }

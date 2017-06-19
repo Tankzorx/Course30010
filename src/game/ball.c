@@ -105,7 +105,7 @@ void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) 
 		if (collisionArea < widthHalf) // Ball hit left side of striker coming from left.
 		{
 			flipY(&(ballPtr->velocity));
-			rotate(&(ballPtr->velocity), collisionArea*2);
+			rotate(&(ballPtr->velocity), ((striker->width >> 14) - collisionArea)*2);
 		} else {
 			rotate(&(ballPtr->velocity), collisionArea*2);
 			flipY(&(ballPtr->velocity));
@@ -113,7 +113,7 @@ void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) 
 	} else {
 		if (collisionArea > widthHalf) // ball hit right side of striker coming from right.
 		{
-			rotate(&(ballPtr->velocity), ((striker->width >> 14) - collisionArea)*2);
+			rotate(&(ballPtr->velocity), collisionArea*2);
 			flipY(&(ballPtr->velocity));
 		} else {
 			flipY(&(ballPtr->velocity));
