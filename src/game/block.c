@@ -88,23 +88,27 @@ void renderBlock(Block block) {
   {
     if (block.indestructible == 1)
     {
-      printN(block.width >> 14, 'I');
+      printN(block.width >> 14, 219);
     } else {
       switch (block.durability) {
         case 0:
           printN(block.width >> 14, ' ');
           break;
         case 1:
-          printN(block.width >> 14, '1');
+          fgcolor(1);
+          printN(block.width >> 14, 0xB2);
           break;
         case 2:
-          printN(block.width >> 14, '2');
+          fgcolor(3);
+          printN(block.width >> 14, 0xB2);
           break;
         case 3:
-          printN(block.width >> 14, '3');
+          fgcolor(2);
+          printN(block.width >> 14, 0xB2);
           break;
       }
     }
+    fgcolor(15);
     gotoxy(block.position.x >> 14, (block.position.y >> 14) + i);
   }
   // Spin it baby.

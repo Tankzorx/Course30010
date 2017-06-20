@@ -129,8 +129,8 @@ int defaultMenu(int* tick) {
   items = insert(items, &highScore);
 
   menu = menuFromNode(items);
-  menu->mx = 96;
-  menu->my = 40;
+  menu->mx = 75;
+  menu->my = 35;
   menu->cx = 0;
   menu->cy = 5;
 
