@@ -10,15 +10,15 @@
 #include "game.h"
 #include "highscore.h"
 
-int tick = 0;
-int LEDFlag = 0;
-int ms10Tick = 1;
-int ms50Tick = 0;
-int ms100Tick = 1;
-int ms200Tick = 0;
-int debounceGuard = 1;
-int moveFlag = 0;
-int strikerMoveFlag = 0;
+static int tick = 0;
+static int LEDFlag = 0;
+static int ms10Tick = 1;
+static int ms50Tick = 0;
+static int ms100Tick = 1;
+static int ms200Tick = 0;
+static int debounceGuard = 1;
+static int moveFlag = 0;
+static int strikerMoveFlag = 0;
 
 #pragma interrupt
 void interruptHandler() {
