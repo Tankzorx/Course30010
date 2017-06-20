@@ -1,33 +1,20 @@
-
-#include "collision.h"
-#include "../api/vector.h"
 #include "../hif/console.h"
-#include <sio.h>
+
+#include "../api/vector.h"
+
 #include "ball.h"
 #include "striker.h"
 #include "block.h"
+#include "collision.h"
 
-// long abs(long a) {
-// 	a & 0x7FFFFFFF;
-// }
 
-/*
- * 0: No collision
- * 1: Hit left side
- * 2: Hit bottom side
- * 3: Hit right side
- * 4: Hit top side
- */
 int detectCollisionBallBlock(Block block, Ball ball) {
-	long epsilon = (long) 1 << 14; // We need some variable to define a
+	long epsilon = (long) 1 << 14;
 
 	if (block.durability == 0)
 	{
 		return -1;
 	}
-	// Ball hit left side We can no longer check 
-	// If ball position is exactly on a coordinate,
-	// as we're using fixed points.
 	if ((ball.position.x > (block.position.x - epsilon)) &&
 		(ball.position.x < (block.position.x)) &&
 		(ball.position.y >= block.position.y &&
@@ -36,15 +23,12 @@ int detectCollisionBallBlock(Block block, Ball ball) {
 		return 1;
 	}
 
-	// Ball hit bottom side. How to format expressions like this xD?
-	// If you have a better idea on how to format this shit,
-	// Please, show me!
 	if (
 		(
-			(ball.position.y > (block.position.y + block.height)) 
+			(ball.position.y > (block.position.y + block.height))
 			&&
 			(ball.position.y < (block.position.y + block.height + epsilon))
-	    ) 
+	    )
 	    &&
 		(
 			ball.position.x >= block.position.x
@@ -56,7 +40,6 @@ int detectCollisionBallBlock(Block block, Ball ball) {
 		return 2;
 	}
 
-	// Ball hit right side
 	if (((ball.position.x > (block.position.x + block.width)) &&
 		(ball.position.x < (block.position.x + block.width + epsilon))) &&
 		(ball.position.y >= block.position.y &&
@@ -65,16 +48,15 @@ int detectCollisionBallBlock(Block block, Ball ball) {
 		return 3;
 	}
 
-	// Ball hit top side
 	if (
 		(
-			(ball.position.y > (block.position.y - epsilon)) 
+			(ball.position.y > (block.position.y - epsilon))
 			&&
 			(ball.position.y < (block.position.y))
-	    ) 
+	    )
 	    &&
 		(
-			ball.position.x >= block.position.x 
+			ball.position.x >= block.position.x
 			&&
 		 	ball.position.x <= block.position.x + block.width
 		)
@@ -110,7 +92,6 @@ int detectCollisionBallStriker(Striker striker,Ball ball) {
     	return -1;
     }
 
-    // Optimize?
 	for (i = 0; i < (striker.width >> 14); i++)
 	{
 		j = i;
@@ -118,9 +99,9 @@ int detectCollisionBallStriker(Striker striker,Ball ball) {
 			ball.position.x < (striker.position.x + ((j + 1) << 14)))
 		{
 			return i;
-		}		
+		}
 	}
-	// Should never be here.
+
 	return -1;
 }
 

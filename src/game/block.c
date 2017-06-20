@@ -1,9 +1,9 @@
-#include <eZ8.h>
 #include <sio.h>
 
-#include "block.h"
 #include "../hif/console.h"
 #include "../api/vector.h"
+
+#include "block.h"
 
 void generateWalls(Block blockMap[]) {
   int i,j;
@@ -17,7 +17,7 @@ void generateWalls(Block blockMap[]) {
   b.width = 3 << 14;
   b.height = 70 << 14;
   b.durability = 3;
-  b.indestructible = 1;   
+  b.indestructible = 1;
   blockMap[0] = b;
 
   auxVector.x = (long)(195) << 14;
@@ -26,7 +26,7 @@ void generateWalls(Block blockMap[]) {
   b.width = 3 << 14;
   b.height = 70 << 14;
   b.durability = 3;
-  b.indestructible = 1;   
+  b.indestructible = 1;
   blockMap[1] = b;
 
   auxVector.x = (long)(1) << 14;
@@ -35,24 +35,19 @@ void generateWalls(Block blockMap[]) {
   b.width = 195 << 14;
   b.height = 3 << 14;
   b.durability = 3;
-  b.indestructible = 1;   
+  b.indestructible = 1;
   blockMap[2] = b;
 
   b.indestructible = 3;
   blockMap[39] = b;
 
-  // return &blockMap[0];
 }
 
 void generateDefaultMap(Block blockMap[]) {
   Vector auxVector;
   Block b;
   int i,j;
-  // Assume walls are in the blockmap.
-  // (Shorthand version of struct creation didn't work.)
-  // Rows
   for (i = 0; i < 3; i++) {
-    // Columns
     for (j = 0; j < 10; j++) {
       auxVector.x = (long)(25+j*15) << 14;
       auxVector.y = (long)(8+i*10) << 14;
@@ -107,10 +102,6 @@ void renderBlock(Block block) {
     }
     gotoxy(block.position.x >> 14, (block.position.y >> 14) + i);
   }
-  // Spin it baby.
-  // while(1) {
-  //   continue;
-  // }
 }
 
 void renderBlockMap(Block blockMap[]) {

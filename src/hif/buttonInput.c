@@ -6,8 +6,9 @@ char readkey() {
   // 01101111 = PF7 pressed
   // 10101111 = PF6 pressed
   // 11101111 = none pressed
-  char PF7DTU = ~PFIN & 0x80; // We bitwise 'not' because 1 means off, 0 means on. This is confusing
-  char PF6DTU = ~PFIN & 0x40; // so if we 'not' it becomes 1=on, 0=off.
+
+  char PF7DTU = ~PFIN & 0x80;
+  char PF6DTU = ~PFIN & 0x40;
   char PD3DTU = ~PDIN & 0x8;
 
   PF7DTU = (PF7DTU >> 7) & 0x1;

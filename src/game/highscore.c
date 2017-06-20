@@ -1,144 +1,51 @@
 #include <sio.h>
-#include <stdlib.h>
 
 #include "../hif/console.h"
 #include "../hif/buttonInput.h"
 
 #include "../api/boss.h"
-#include "../api/Debounce.h"
-#include "../api/CircularDoublyLinkedList.h"
-
-#include "highscore.h"
 
 
-Highscore* initializeDefaultHighscore() {
-  Highscore* highscore;
-
-  highscore = malloc(sizeof(*highscore));
-
-  highscore->mx = 10;
-  highscore->my = 10;
-  highscore->cx = 0;
-  highscore->cy = 5;
-  highscore->items = NULL;
-
-  return highscore;
-}
-
-
-void insertHighscore(Highscore* highscore, int score) {
-  Node* items;
-
-  HighscoreItem highscoreItem;
-  highscoreItem.score = score;
-
-  items = highscore->items;
-
-  gotoxy(60,60);
-  printf("FATTTTTTTTTTfafaafafa");
-
-  if( items == NULL) {
-    printf("FATTTTTTTTTTTTTTTTTTTIINo scores yet");
-    items = singleton(&highscore);
-  } else {
-    printf("FATTTTTTTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyet");
-    items = insert(items, &highscoreItem);
+void renderHighscore(int highscores[]) {
+  int i;
+  clrscr();
+  for (i = 0; i < 10; i++) {
+    gotoxy(10,10 + i*5);
+    printf("%d. %d", (i + 1), highscores[i]);
   }
 
-  highscore->items = items;
+  gotoxy(50, 65);
+  printf("Click pd3 to go back.");
 }
 
 
-void clearHighscore(Highscore* highscore) {
-  HighscoreItem* highscoreItem = highscore->items->data;
+int highscore(int highscores[], int* debounceGuard, int* ms50Tick) {
+  char keyRead = 0;
+  renderHighscore(highscores);
 
-  gotoxy(highscore->mx, highscore->my);
-  printN(12, ' ');
-}
-
-
-void renderHighscore(Highscore* highscore) {
-  HighscoreItem* highscoreItem = highscore->items->data;
-
-  gotoxy(highscore->mx, highscore->my);
-
-  if( highscore->items == NULL) {
-    printf("%s", "No scores yet");
-  } else {
-    printf("Score: %d", highscoreItem->score);
-  }
-}
-
-
-void renderHighscoreControls(Highscore* highscore) {
-  HighscoreItem* highscoreItem = highscore->items->data;
-
-  gotoxy(highscore->mx + highscore->cx, highscore->my + highscore->cy);
-  printf("PF7: Next - PF6: Previous - PD3: Back");
-}
-
-
-void prevHighscore(Highscore* highscore) {
-  highscore->items = prev(highscore->items);
-}
-
-
-void nextHighscore(Highscore* highscore) {
-  highscore->items = next(highscore->items);
-}
-
-
-int listenHighscore(Highscore* highscore, int* tick) {
-
-  char previousKey, currentKey;
-  sleep(tick, 800);
+  *debounceGuard = 1;
+  while(*debounceGuard != 0) {}
 
   while (1) {
-    currentKey = readkey();
-
-    sleep(tick, 30);
-
-    if(currentKey != readkey()){
-      continue;
-    }
-
-    if(previousKey == currentKey){
-      continue;
-    }
-
-    previousKey = currentKey;
-
-    switch (currentKey) {
-      case 1:
-        clearHighscore(highscore);
-        nextHighscore(highscore);
-        renderHighscore(highscore);
+    switch (readkey()) {
+      case 0:
         break;
-      case 2:
-        clearHighscore(highscore);
-        prevHighscore(highscore);
-        renderHighscore(highscore);
-        break;
-      case 3:
+      case 7:
         renderBossMode();
-        sleep(tick, 300);
-        spin();
-        renderHighscoreControls(highscore);
-        renderHighscore(highscore);
+        *debounceGuard = 1;
+        while(*debounceGuard != 0) {}
+        while(readkey() == 0) {}
+        renderHighscore(highscores);
         break;
       case 4:
-        return 1;
+        *ms50Tick = 1;
+        while (*ms50Tick != 0) {}
+        if (readkey() == 4) {
+          return 1;
+        }
         break;
       default:
         break;
     }
   }
-}
-
-
-int highscorex(Highscore* highscore, int* tick) {
-//  clrscr();
-  renderHighscore(highscore);
-  renderHighscoreControls(highscore);
-  listenHighscore(highscore, tick);
 }

@@ -1,9 +1,8 @@
 #include <sio.h>
 
-#include "ball.h"
-#include "../api/vector.h"
 #include "../hif/console.h"
-#include "../api/sincos.h"
+
+#include "ball.h"
 
 void moveBall(Ball* ball) {
 	ball->position.x = ball->position.x + ball->velocity.x;
@@ -11,7 +10,7 @@ void moveBall(Ball* ball) {
 }
 
 void clearBall(Ball* ball) {
-    gotoxy(ball->lastRenderPosition.x >> 14, ball->lastRenderPosition.y >> 14);
+  gotoxy(ball->lastRenderPosition.x >> 14, ball->lastRenderPosition.y >> 14);
 	printN(1, ' ');
 }
 
@@ -36,7 +35,7 @@ void handleBlockCollision(Ball* ballPtr, int collisionState) {
 		case 4:
 			flipY(&(ballPtr->velocity));
 			break;
-		default: 
+		default:
 			break;
 	}
 }
@@ -54,7 +53,7 @@ void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) 
 	int widthHalf = ((striker->width >> 14) / 2);
 
 	if ((ballPtr->velocity.x) > 0)
-	{	
+	{
 		if (collisionArea < widthHalf) // Ball hit left side of striker coming from left.
 		{
 			flipY(&(ballPtr->velocity));
@@ -76,6 +75,6 @@ void handleStrikerCollision(Ball* ballPtr, Striker* striker, int collisionArea) 
 }
 
 void moveUpEpsilonBall(Ball* ball) {
-    long epsilon = (long) 1 << 13;
+  long epsilon = (long) 1 << 13;
 	ball->position.y = ball->position.y - epsilon;
 }

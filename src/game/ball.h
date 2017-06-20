@@ -1,8 +1,8 @@
 #ifndef _DTU_BALL_
 #define _DTU_BALL_
 
-// Should be moved to more generic lib. dno where?
 #include "../api/vector.h"
+
 #include "striker.h"
 
 typedef struct

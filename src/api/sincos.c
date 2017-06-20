@@ -1,7 +1,6 @@
-#include <sio.h>             // special encore serial i/o routines
+#include <sio.h>
 #include "LUT.h"
 #include "sincos.h"
-#include "vector.h"
 
 
 void printFix(long i) {
@@ -11,7 +10,7 @@ void printFix(long i) {
 	}
 	printf("%1d.%04ld \n", i >> 16, 10000 * (unsigned long) ( i & 0xffff) >> 16);
 }
-// Convert from 16.0 to 2.14 ?
+
 long expand(long i) {
   return i << 2;
 }

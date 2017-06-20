@@ -1,20 +1,21 @@
 #include <eZ8.h>
 #include <sio.h>
 
-#include "game.h"
-#include "block.h"
-#include "ball.h"
-#include "../api/boss.h"
-#include "../api/vector.h"
-#include "../api/sincos.h"
-#include "collision.h"
 #include "../hif/console.h"
 #include "../hif/buttonInput.h"
 #include "../hif/timer.h"
 #include "../hif/LED.h"
+
+#include "../api/boss.h"
+#include "../api/vector.h"
+#include "../api/sincos.h"
+
+#include "game.h"
+#include "block.h"
+#include "ball.h"
+#include "collision.h"
 #include "striker.h"
 
-// gameState som input skal nok gøres senere.
 int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* currentPlayerScore,  int* LEDFlag) {
   char scoreHelp = 0;
   Striker striker;
@@ -30,7 +31,6 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
   int collisionState;
   int collisionStateStriker;
   Ball ball;
-  // Ball ball2;
   Block b;
   Vector auxVector;
 
@@ -66,13 +66,9 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
   LEDSetStringByIndex('0',1, &LEDDataInstance);
   LEDSetStringByIndex('0',2, &LEDDataInstance);
   LEDSetStringByIndex(0x3D,3, &LEDDataInstance);
-  // LEDSetStringByIndex((char)(((int)':') + lives),3, &LEDDataInstance);
 
 
   clrscr();
-  // gotoxy(10,10);
-  // printf("Block position: (%d, %d)\n", blockMap[0].position.x >> 14, blockMap[0].position.y >> 14);
-  // return;
   renderBlockMap(blockMap);
   renderStriker(&striker);
 
@@ -109,7 +105,6 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
     }
 
     if (*moveFlag == 1) {
-      // Move ball and detect collision between ball&blocks.
       moveBall(&ball);
       // moveBall(&ball2);
 
@@ -134,7 +129,7 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
             lives = lives - 1;
             LEDSetStringByIndex('|' + lives - 1,3, &LEDDataInstance);
         } else {
-            return 1; // return menu state for now.
+            return 1;
         }
       }
 
@@ -167,7 +162,6 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
             printf("SCORE: %d\n", *currentPlayerScore);
             renderBlock(blockMap[i]);
           }
-          // break;
         }
         // collisionState = detectCollisionBallBlock(blockMap[i], ball2);
         // handleBlockCollision(&ball2, collisionState);
@@ -177,7 +171,6 @@ int game(int* moveFlag, int* debounceGuard,  int* strikerMoveFlag,  int* current
         //   {
         //     blockMap[i].durability = blockMap[i].durability - 1;
         //     *currentPlayerScore = *currentPlayerScore + 1;
-            
         //     // Update LED display
         //     scoreHelp = (*currentPlayerScore/100);
         //     LEDSetStringByIndex(scoreHelp + 48,0, &LEDDataInstance);
