@@ -1,16 +1,9 @@
 #ifndef _DTU_LED_
 #define _DTU_LED_
 
-
-// #define LED_MAX_STR_LEN 50
-
 typedef struct
 {
 	int currentColumn;
-	// int LEDOffset;
-	// int LEDTextOffset;
-	// int insertNewCharFlag;
-	// int videoBufferReplaceOffset;
 	char video_buffer[5][6];
 } LEDData;
 

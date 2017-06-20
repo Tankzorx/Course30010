@@ -1,28 +1,6 @@
 #ifndef _DTU_HIGHSCORE_
 #define _DTU_HIGHSCORE_
 
-#include "../api/CircularDoublyLinkedList.h"
-
-
-typedef struct {
-	int score;
-} HighscoreItem;
-
-
-typedef struct {
-  int mx;
-  int my;
-  int cx;
-  int cy;
-  Node* items;
-} Highscore;
-
-
-int highscorex(Highscore* highscore, int* tick);
-
-Highscore* initializeDefaultHighscore();
-
-void insertHighscore(Highscore* highscore, int score);
-
+int highscore(int highscores[], int* debounceGuard, int* ms50Tick);
 
 #endif /*! _DTU_HIGHSCORE_ */
